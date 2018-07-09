@@ -14,8 +14,8 @@ script:
 after_script:
   - cd ./public
   - git init
-  - git config user.name "flyingzl" --{GitHub账户名称}
-  - git config user.email "flyingzl@gmail.com" --{Github账户邮箱}
+  - git config user.name "flyingzl"
+  - git config user.email "flyingzl@gmail.com"
   - git add .
   - git commit -a -m "fea:更新文章"
   - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages:gh-pages
@@ -26,4 +26,4 @@ branches:
     - master
 env:
  global:
-   - GH_REF: github.com/flyingzl/flyingzl.github.io.git --{仓库地址}
+   - GH_REF: github.com/flyingzl/flyingzl.github.io.git
