@@ -17,7 +17,7 @@ after_script:
   - git config user.name "flyingzl" --{GitHub账户名称}
   - git config user.email "flyingzl@gmail.com" --{Github账户邮箱}
   - git add .
-  - git commit -m "fea:更新文章"
+  - git commit -a -m "fea:更新文章"
   - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages:gh-pages
 # E: Build LifeCycle
 
