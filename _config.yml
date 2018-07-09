@@ -82,7 +82,7 @@ disqus_shortname: asyncoder
 deploy:
   type: git
   repository: git@github.com:flyingzl/asyncoder.github.io.git
-  branch: gh-pages
+  branch: master
 
 menu:
   home: /
