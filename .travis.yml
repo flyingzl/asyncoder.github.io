@@ -23,8 +23,7 @@ after_script:
 
 branches:
   only:
-    - master --{Hexo源码分支名称}
-    - gh-pages
+    - master
 env:
  global:
    - GH_REF: github.com/flyingzl/flyingzl.github.io.git --{仓库地址}
