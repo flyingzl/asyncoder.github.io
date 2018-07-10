@@ -82,17 +82,12 @@ deploy:
 ## Themes: https://hexo.io/themes/
 theme: next
 
-disqus:
-  enable: true
-  shortname: asyncoder
-  count: true
-
 
 menu:
   home: /
   archives: /archives
-  categories: /categories
-  tags: /tags
+  tags: /tags/
+  categories: /categories/
 
 
 social:
@@ -102,3 +97,9 @@ fancybox: true
 
 # available: normal | night | night eighties | night blue | night bright
 highlight_theme: night
+
+
+changyan:
+  enable: false
+  appid: xx
+  appkey: dd
