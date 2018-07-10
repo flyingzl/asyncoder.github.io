@@ -70,13 +70,6 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: next
-
-disqus_shortname: asyncoder
-
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
@@ -84,12 +77,28 @@ deploy:
   repository: git@github.com:flyingzl/asyncoder.github.io.git
   branch: master
 
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
+
+disqus:
+  enable: true
+  shortname: asyncoder
+  count: true
+
+
 menu:
   home: /
   archives: /archives
+  categories: /categories
   tags: /tags
+
 
 social:
   GitHub: https://github.com/flyingzl
 
 fancybox: true
+
+# available: normal | night | night eighties | night blue | night bright
+highlight_theme: night

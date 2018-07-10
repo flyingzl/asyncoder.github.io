@@ -6,7 +6,9 @@
     "version": "3.7.1"
   },
   "scripts": {
-    "start": "hexo generate  && hexo server -p 5000",
+    "start": "run-p generate server",
+    "generate": "hexo generate --watch",
+    "server": "hexo server -p 5000",
     "deploy": "hexo deploy --generate"
   },
   "dependencies": {
@@ -19,6 +21,7 @@
     "hexo-renderer-ejs": "^0.3.0",
     "hexo-renderer-marked": "^0.3.0",
     "hexo-renderer-stylus": "^0.3.1",
-    "hexo-server": "^0.2.0"
+    "hexo-server": "^0.2.0",
+    "npm-run-all": "^4.1.3"
   }
 }
