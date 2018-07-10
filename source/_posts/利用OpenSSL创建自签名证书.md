@@ -47,7 +47,7 @@ openssl genrsa -out server-key.pem 1024
 2. 根据私钥生成CSR
 
 ```bash
-openssl req -new -key server-key.pem -config -out server-csr.pem
+openssl req -new -key server-key.pem  -out server-csr.pem
 ```
 
 
