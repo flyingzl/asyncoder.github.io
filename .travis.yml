@@ -22,6 +22,8 @@ after_script:
 # E: Build LifeCycle
 
 branches:
+  except:
+    - master
   only:
     - develop
 env:
