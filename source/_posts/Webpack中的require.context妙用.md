@@ -6,24 +6,6 @@ date: 2018-07-10
 tags: [Vue,Webpack]
 ---
 
-`require.context`是Webpack中用来管理依赖的一个函数，它的参数如下：
-```javascript
-require.context(directory, useSubdirectories = false, regExp = /^\.\//)
-```
-
-使用方式如下所示：
-```javascript
-// 创建一个test文件夹（不包含子目录）的上下文，可以require其下的所有js文件
-const context = require.context("./test", false, /\.js$/)
-const importAll = context => {
-    // context.keys() 返回找到的js文件路径
-    context.keys().forEach(key => context(key)
-}
-importAll()
-```
-
-<!-- more -->
-
 ## require.context简介
 
 `require.context`是Webpack中用来管理依赖的一个函数，它的参数如下：
@@ -41,6 +23,7 @@ const importAll = context => {
 }
 importAll()
 ```
+<!-- more -->
 
 ## 实践 ---- 自动注册Vue组件
 利用Vue开发时，我们常会抽离出一些组件并将其放到`components`文件夹，然后在Vue中进行引用，例如：
