@@ -247,7 +247,7 @@ function patch (oldVNode, vnode, parentElm) {
 - 如果旧的VNode不存在，新的VNode存在，则创建新的DOM
 - 如果旧的VNode存在，新的VNode不存在，则删除旧的DOM
 - 如果新旧两个VNode都存在并相同，则找出最小差异然后更新DOM
-- 如果新旧连个VNode都存但不相同，则将旧的DOM删除，然后创建新的DOM
+- 如果新旧两个VNode都存但不相同，则将旧的DOM删除，然后创建新的DOM
 
 这里的关键是：如何判断两个`VNode`相同呢？请看下面的代码：
 
@@ -273,7 +273,7 @@ function sameVnode () {
 
 也就是说，只有当 key、 tag、 isComment（是否为注释节点）相同、 data同时定义（或不定义），同时满足当标签类型为input的时候type相同，那么它们就是相同的VNode。
 
-注意这里的**key**相同，才代表VNode相同。对比我们之前出错的样例，因为我们的key是索引号，可知第一条记录的索引号为0。当第一条记录被删除后，第二条记录的key的索引号会从1变为0，这样导致了两者的key相同。因为key相同时，diff算法会认为它们是相同的VNode，那么旧的VNode（如果VNode是一个组件，它有一个componentInstance指向Vue实例）会被复用，导致显示出错。修改key为唯一id时，根据上文`patch`函数的逻辑，旧的VNode所对应的DOM会被干掉，然后得新的DOM会被创建。因为是新创建的DOM，那么对应的Vue也是新创建的，一切就会显示正常。
+注意这里的**key**相同，才代表VNode相同。对比我们之前出错的样例，因为我们的key是索引号，可知第一条记录的索引号为0。当第一条记录被删除后，第二条记录的key的索引号会从1变为0，这样导致了两者的key相同。因为key相同时，diff算法会认为它们是相同的VNode，那么旧的VNode（如果VNode是一个组件，它有一个componentInstance指向Vue实例）指向的Vue实例会被复用，导致显示出错。修改key为唯一id时，根据上文`patch`函数的逻辑，旧的VNode所对应的DOM会被干掉，然后得新的DOM会被创建。因为是新创建的DOM，那么对应的Vue也是新创建的，一切就会显示正常。
 
 所以，保证`key`唯一，就可以解决组件出错的问题。
 
