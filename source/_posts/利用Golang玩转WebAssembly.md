@@ -6,8 +6,6 @@ tags:
 - Go
 ---
 
-# 前言
-
 WebAssembly，也叫WAMS，是一个可移植、体积小、加载快并且兼容 Web 的全新二进制格式，可以将C/C++/Rust等语言编写的代码编译为wasm文件然后运行在Web上。
 
 用C/C++写wasm有点麻烦，需要安装各种编译器。话说最新[Go 1.11](https://blog.golang.org/go1.11)发布了，其中有个新特性就是对WebAssembly的支持，今天我们就来玩玩，如何将Go代码编译为wasm文件。
