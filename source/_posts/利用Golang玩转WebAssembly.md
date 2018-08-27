@@ -8,9 +8,9 @@ tags:
 
 # 前言
 
-WebAssembly，也叫WAMS，是一个可移植、体积小、加载快并且兼容 Web 的全新二进制格式，可以将C/C++/Rust等程序编写的代码编译为wasm文件然后运行在Web上。
+WebAssembly，也叫WAMS，是一个可移植、体积小、加载快并且兼容 Web 的全新二进制格式，可以将C/C++/Rust等语言编写的代码编译为wasm文件然后运行在Web上。
 
-用C/C++写wasm有点麻烦，需要安装各种编译器。话说最新[Go 1.11](https://blog.golang.org/go1.11)发布了，其中有个新特性就是对WebAssembly的支持，今天我们就来玩玩，将Go代码编译为wasm文件。
+用C/C++写wasm有点麻烦，需要安装各种编译器。话说最新[Go 1.11](https://blog.golang.org/go1.11)发布了，其中有个新特性就是对WebAssembly的支持，今天我们就来玩玩，如何将Go代码编译为wasm文件。
 
 *提示：本文不会介绍Go的相关语法以及WASM的相关基础知识。如果阅读有困难，请先参考相关的基础介绍或阅读相关文章。*
 
@@ -55,7 +55,7 @@ GOARCH=wasm GOOS=js go build -o test.wasm main.go
 cp $(go env GOROOT)/misc/wasm/wasm_exec.{html,js} .
 ```
 
-上面的意思是把Go安装目录下的wasm_exec.html和 easm_exec.js复制到当前文件夹。一切就绪后，我们用`http-server`（可以通过npm install http-server来安装）启动一个Web服务器：
+上面的意思是把Go安装目录下的`wasm_exec.html`和`wasm_exec.js`复制到当前文件夹。一切就绪后，我们用`http-server`（可以通过npm install http-server来安装）启动一个Web服务器：
 
 ```bash
 http-server -c 0 -p 2000
