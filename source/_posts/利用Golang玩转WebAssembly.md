@@ -1,6 +1,8 @@
 ---
 title: 利用Golang玩转WebAssembly
 date: 2018-08-27 14:07:51
+categories:
+- 后端技术
 tags: 
 - WASM
 - Go

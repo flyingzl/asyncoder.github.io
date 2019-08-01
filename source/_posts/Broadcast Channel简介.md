@@ -1,6 +1,8 @@
 ---
 title: Broadcast Channel简介
 date: 2019-07-26 17:30:00
+categories:
+- 前端技术
 tags: JavaScript
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: 你真的了解Javascript执行顺序么？
 date: 2018-07-17 09:37:22
+categories:
+- 前端技术
 tags: 
 - JavaScript
 - Node.js

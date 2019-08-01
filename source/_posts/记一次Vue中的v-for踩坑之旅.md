@@ -1,6 +1,8 @@
 ---
 title: 记一次Vue中的v-for踩坑之旅
 date: 2018-07-20 17:30:00
+categories:
+- 前端技术
 tags: Vue
 ---
 
