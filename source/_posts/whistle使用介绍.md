@@ -59,7 +59,7 @@ $ start -p 3333
 #  使用
 
 
-### 抓包
+## 抓包
 
 网络抓包是一个抓包工具的必备功能
 
@@ -88,7 +88,7 @@ $ start -p 3333
 
 ## 代码注入
 
-- 脚本注入
+### 脚本注入
 
 ![引用脚本](https://g.asyncoder.com/images/20191029/8.jpg)
 
@@ -97,7 +97,7 @@ $ start -p 3333
 ![脚本注入效果](https://g.asyncoder.com/images/20191029/7.jpg)
 
 
-- 样式注入
+### 样式注入
 
 
 ![引用样式](https://g.asyncoder.com/images/20191029/10.jpg)
@@ -106,7 +106,7 @@ $ start -p 3333
 
 ![样式注入效果](https://g.asyncoder.com/images/20191029/12.jpg)
 
-- HTML内容注入
+### HTML内容注入
 
 ![引用HTML文件](https://g.asyncoder.com/images/20191029/13.jpg)
 
@@ -129,7 +129,7 @@ $ start -p 3333
 ![线上文件注入效果](https://g.asyncoder.com/images/20191029/17.jpg)
 
 
-### 其它
+## 其它
 
 更多请参考官方文档[http://wproxy.org/whistle/quickstart.html](http://wproxy.org/whistle/quickstart.html)
 
