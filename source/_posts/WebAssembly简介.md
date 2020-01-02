@@ -322,4 +322,6 @@ larry
 
 # 其它
 
-更多的内容请参考[Emscripten](https://emscripten.org/docs/getting_started/index.html)官网
+更多的内容请参考[Emscripten](https://emscripten.org/docs/getting_started/index.html)官网。
+
+本文涉及到的样例请点击[下载](https://g.asyncoder.com/images/202012193556-wasm-demo.zip)。
