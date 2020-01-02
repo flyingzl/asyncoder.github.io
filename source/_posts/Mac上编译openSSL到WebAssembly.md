@@ -28,7 +28,7 @@ shared:ERROR: '/usr/local/bin/node /usr/local/Cellar/emscripten/1.38.44/libexec/
 ```
 <!-- more -->
 
-Google和StackOverflow下才发现，Mac系统自带的OpenSSL在WebAssembly中是没法直接是用的；因为WebAssembly和操作系统没关，不能直接使用和操作系统相关的库文件，我们需要利用`Emscripten`重新编译下。
+Google和StackOverflow下才发现，Mac系统自带的OpenSSL在WebAssembly中是没法直接是用的；因为WebAssembly和操作系统无关，不能直接使用和操作系统相关的库文件，我们需要利用`Emscripten`重新编译下。
 
 #  编译openSSL
 
