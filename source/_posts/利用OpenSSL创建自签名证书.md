@@ -1,7 +1,7 @@
 ---
 title: 利用OpenSSL创建自签名证书
 categories:
-- 系统配置
+- 系统软件
 date: 2018-07-10
 tags: 
   - Node.js
