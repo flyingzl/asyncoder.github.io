@@ -35,7 +35,6 @@ const takeScreenshot = ( savedFolderName = 'screenShoots' ) => {
         if(isNative) {
             const fs = require('fs')
             const path = require('path')
-            const dir = process.cwd()
             const { remote } = require('electron')
             const screenshotsDir = path.join(process.env.HOME || process.env.USERPROFILE, savedFolderName)
             if (!fs.existsSync(screenshotsDir)) {
