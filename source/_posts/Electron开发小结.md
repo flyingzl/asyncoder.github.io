@@ -26,7 +26,7 @@ yarn install
 
 ## Electron 截图
 
-Electron里面其实有专门的截屏函数[capturePage](https://www.electronjs.org/docs/api/web-contents#contentscapturepagerect), 单必须在主进程进行调用，可以在渲染进程通过[remote](https://www.electronjs.org/docs/api/remote)模快来调用，如下所示：
+Electron里面其实有专门的截屏函数[capturePage](https://www.electronjs.org/docs/api/web-contents#contentscapturepagerect), 但必须在主进程进行调用，可以在渲染进程通过[remote](https://www.electronjs.org/docs/api/remote)模快来调用，如下所示：
 
 ```javascript
 const takeScreenshot = ( savedFolderName = 'screenShoots' ) => {
