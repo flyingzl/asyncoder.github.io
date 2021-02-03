@@ -24,7 +24,7 @@ WebTransport 提供了如下功能特性：
 -   传输可靠数据流 （类似 TCP）
 -   传输不可靠数据流（类似 UDP）
 -   数据加密和拥塞控制（congestion control）
--   基于 Origin 的安全模型（校验请求方是否合法，类似于 CORS 的[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)）
+-   基于 Origin 的安全模型（校验请求方是否在白名单，类似于 CORS 的[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)）
 -   支持多路复用（类似于 HTTP2 的 Stream）
 
 ## WebTransport 适用场景
