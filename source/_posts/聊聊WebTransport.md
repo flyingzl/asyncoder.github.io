@@ -24,8 +24,10 @@ WebTransport 提供了如下功能特性：
 -   传输可靠数据流 （类似 TCP）
 -   传输不可靠数据流（类似 UDP）
 -   数据加密和拥塞控制（congestion control）
--   基于 Origin 的安全模型（校验请求方是否在白名单，类似于 CORS 的[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)）
+-   基于 Origin 的安全模型（校验请求方是否在白名单内，类似于 CORS 的[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)）
 -   支持多路复用（类似于 HTTP2 的 Stream）
+
+<!--more -->
 
 ## WebTransport 适用场景
 
@@ -33,15 +35,13 @@ WebTransport 提供了如下功能特性：
 -   服务器消息推送
 -   其它不考虑数据达到顺序的场景
 
-<!-- more -->
-
 # API 使用
 
 WebTransport 主要提供三种类型的 API
 
 -   `datagramReadable`和`datagramWritable`，用于不可靠数据传输
 -   `createBidirectionalStream`, 用于双向数据流可靠传输
--   `createUnidirectionalStream`, 用于单向 数据流可靠传输
+-   `createUnidirectionalStream`, 用于单向数据流可靠传输
 
 ## 创建 WebTransport 对象
 
@@ -59,7 +59,7 @@ transport.closed.then(() => {
 
 `transport.closed`也返回一个 Promise，QUIC 连接关闭时会执行
 
-使用 WebTransport 时需要创建一个 Server， 可以基于 Python 库[aioquic](https://github.com/aiortc/aioquic)来创建服务器，也可以直接使用 Google Chrome 的[样例代码](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py)。
+使用 WebTransport 时需要创建一个QUIC Server， 可以基于 Python 库[aioquic](https://github.com/aiortc/aioquic)来创建服务器，也可以直接使用 Google Chrome 的[样例代码](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py)。
 
 ## 不可靠数据数传
 
@@ -132,7 +132,7 @@ WebTransport 提供了类似于 UDP 的不可靠传输接口，分别为`datagra
 
 ## 双向可靠数据流
 
-如果需要 保证可靠的数据传输并且需要返回实时结果，可以通过`transport.createBidirectionalStream()`来创建可靠数据传输。这个接口的功能类似于 WebSocket，但优点在于不受对头阻塞影响。
+如果需要保证可靠的数据传输并且需要返回实时结果，可以通过`transport.createBidirectionalStream()`来创建可靠数据传输。这个接口的功能类似于 WebSocket，但优点在于不受对头阻塞影响。
 
 ```javascript
 ;(async () => {
@@ -248,7 +248,7 @@ WebTransport 提供了类似于 UDP 的不可靠传输接口，分别为`datagra
 
 WebTransport 提供的三种 API 可以根据实际情况来使用：
 
-1. 不需要保证虑数据发送先后顺序，就选择`transport.datagramWritable`
+1. 不需要保证数据发送先后顺序，就选择`transport.datagramWritable`
 2. 需要保证数据发送顺序，但是不关心返回值，可以选择`transport.createUnidirectionalStream()`
 3. 需要保证数据发送顺序且关心返回结果，就选择`transport.createBidirectionalStream()`
 
@@ -318,3 +318,4 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 -   [让互联网更快的“快”---QUIC 协议原理分析](https://zhuanlan.zhihu.com/p/32630510)
 -   [天下武功，唯'QUICK'不破，揭秘 QUIC 的五大特性及外网表现](https://cloud.tencent.com/developer/article/1155289)
 -   [QUIC 协议设计要点分析](https://zhuanlan.zhihu.com/p/60999430)
+
