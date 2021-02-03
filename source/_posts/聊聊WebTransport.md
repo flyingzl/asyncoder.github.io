@@ -2,7 +2,7 @@
 title: 聊聊WebTransport
 date: 2021-02-03 15:00:00
 categories:
-    - 前端技术
+- 前端技术
 tags: JavaScript
 ---
 
