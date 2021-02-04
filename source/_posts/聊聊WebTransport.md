@@ -27,7 +27,7 @@ WebTransport 提供了如下功能特性：
 -   基于 Origin 的安全模型（校验请求方是否在白名单内，类似于 CORS 的[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)）
 -   支持多路复用（类似于 HTTP2 的 Stream）
 
-<!--more -->
+<!--more-->
 
 ## WebTransport 适用场景
 
@@ -59,7 +59,7 @@ transport.closed.then(() => {
 
 `transport.closed`也返回一个 Promise，QUIC 连接关闭时会执行
 
-使用 WebTransport 时需要创建一个QUIC Server， 可以基于 Python 库[aioquic](https://github.com/aiortc/aioquic)来创建服务器，也可以直接使用 Google Chrome 的[样例代码](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py)。
+使用 WebTransport 时需要创建一个 QUIC Server， 可以基于 Python 库[aioquic](https://github.com/aiortc/aioquic)来创建服务器，也可以直接使用 Google Chrome 的[样例代码](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py)。
 
 ## 不可靠数据数传
 
@@ -264,50 +264,21 @@ WebTransport 现在只有 Google Chrome 支持，其标准也处于草案阶段�
 
 浏览器检测到`origin-trial`才开启 WebTransport 功能。
 
-如果向自己玩耍 WebTransport，需要生成下证书，然后在 Google Chrome 时加上自定参数，Mac下启动Google Chrome需要加上如下类似代码：
+如果向自己玩耍 WebTransport，可以通过[mkcert](https://github.com/FiloSottile/mkcert)生成下 HTTPS 证书，然后在 Google Chrome 时加上自定参数，例如 Mac 下启动 Google Chrome 需要加上如下类似代码：
 
 ```bash
-open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --origin-to-force-quic-on=localhost:4433 --ignore-certificate-errors-spki-list=nQNe8dN7Y7RzgiY2U399mEQtpJrqlJu+b4Jbuj1TRvw= --user-data-dir="/tmp/quic" https://googlechrome.github.io/samples/webtransport/client.html'
+open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --origin-to-force-quic-on=localhost:4433 https://googlechrome.github.io/samples/webtransport/client.html'
 ```
 
-具体可以参考[https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py)：
+具体代码可以参考[https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py).
+
+以Mac为例子，在命令行依此执行如下代码，就可以启动一个 QUIC Server。
 
 ```bash
-# ---- Certificates ----
-#
-# QUIC always operates using TLS, meaning that running a QuicTransport server
-# requires a valid TLS certificate.  The easiest way to do this is to get a
-# certificate from a real publicly trusted CA like <https://letsencrypt.org/>.
-# https://developers.google.com/web/fundamentals/security/encrypt-in-transit/enable-https
-# contains a detailed explanation of how to achieve that.
-#
-# As an alternative, Chromium can be instructed to trust a self-signed
-# certificate using command-line flags.  Here are step-by-step instructions on
-# how to do that:
-#
-#   1. Generate a certificate and a private key:
-#         openssl req -newkey rsa:2048 -nodes -keyout certificate.key \
-#                   -x509 -out certificate.pem -subj '/CN=Test Certificate' \
-#                   -addext "subjectAltName = DNS:localhost"
-#
-#   2. Compute the fingerprint of the certificate:
-#         openssl x509 -pubkey -noout -in certificate.pem |
-#                   openssl rsa -pubin -outform der |
-#                   openssl dgst -sha256 -binary | base64
-#      The result should be a base64-encoded blob that looks like this:
-#          "Gi/HIwdiMcPZo2KBjnstF5kQdLI5bPrYJ8i3Vi6Ybck="
-#
-#   3. Pass a flag to Chromium indicating what host and port should be allowed
-#      to use the self-signed certificate.  For instance, if the host is
-#      localhost, and the port is 4433, the flag would be:
-#         --origin-to-force-quic-on=localhost:4433
-#
-#   4. Pass a flag to Chromium indicating which certificate needs to be trusted.
-#      For the example above, that flag would be:
-#         --ignore-certificate-errors-spki-list=Gi/HIwdiMcPZo2KBjnstF5kQdLI5bPrYJ8i3Vi6Ybck=
-#
-# See https://www.chromium.org/developers/how-tos/run-chromium-with-flags for
-# details on how to run Chromium with flags.
+brew install mkcert
+mkcert -install
+mkcert localhost
+python quic_transport_server.py localhost.pem localhost-key.pem
 ```
 
 # 参考资料
@@ -315,7 +286,7 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 -   [WebTransport explainer](https://github.com/w3c/webtransport/blob/main/explainer.md)
 -   [Experimenting with WebTransport](https://web.dev/webtransport/)
 -   [Experimenting with QUIC and WebTransport in Go](https://centrifugal.github.io/centrifugo/blog/quic_web_transport/)
+-   [How to use HTTPS for local development](https://web.dev/how-to-use-local-https/)
 -   [让互联网更快的“快”---QUIC 协议原理分析](https://zhuanlan.zhihu.com/p/32630510)
 -   [天下武功，唯'QUICK'不破，揭秘 QUIC 的五大特性及外网表现](https://cloud.tencent.com/developer/article/1155289)
 -   [QUIC 协议设计要点分析](https://zhuanlan.zhihu.com/p/60999430)
-
