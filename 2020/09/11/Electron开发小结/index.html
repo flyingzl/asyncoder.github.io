@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript,Node.js,Electron,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近基于Electron开发了一个音视频应用，遇到了一些坑，特此记录下，希望可以帮助后续的同学。 Electron下载慢安装electron时会自动最新的Electron二进制文件，由于文件比较大还容易墙，所以我们可以先配置好环境变量，再运行yarn或者npm install 12export ELECTRON_MIRROR=&quot;https://npm.taobao.org/mirrors/elec">
+<meta name="keywords" content="JavaScript,Node.js,Electron">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Electron开发小结">
+<meta property="og:url" content="https://asyncoder.com/2020/09/11/Electron开发小结/index.html">
+<meta property="og:site_name" content="记录点滴生活，每天进步一点点">
+<meta property="og:description" content="最近基于Electron开发了一个音视频应用，遇到了一些坑，特此记录下，希望可以帮助后续的同学。 Electron下载慢安装electron时会自动最新的Electron二进制文件，由于文件比较大还容易墙，所以我们可以先配置好环境变量，再运行yarn或者npm install 12export ELECTRON_MIRROR=&quot;https://npm.taobao.org/mirrors/elec">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-02-04T09:57:46.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Electron开发小结">
+<meta name="twitter:description" content="最近基于Electron开发了一个音视频应用，遇到了一些坑，特此记录下，希望可以帮助后续的同学。 Electron下载慢安装electron时会自动最新的Electron二进制文件，由于文件比较大还容易墙，所以我们可以先配置好环境变量，再运行yarn或者npm install 12export ELECTRON_MIRROR=&quot;https://npm.taobao.org/mirrors/elec">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://asyncoder.com/2020/09/11/Electron开发小结/">
+
+
+
+
+
+  <title>Electron开发小结 | 记录点滴生活，每天进步一点点</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录点滴生活，每天进步一点点</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://asyncoder.com/2020/09/11/Electron开发小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Zhao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录点滴生活，每天进步一点点">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Electron开发小结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-11T05:00:00+00:00">
+                2020-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端技术/" itemprop="url" rel="index">
+                    <span itemprop="name">前端技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/11/Electron开发小结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/11/Electron开发小结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/09/11/Electron开发小结/" class="leancloud_visitors" data-flag-title="Electron开发小结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近基于Electron开发了一个音视频应用，遇到了一些坑，特此记录下，希望可以帮助后续的同学。</p>
+<h2 id="Electron下载慢"><a href="#Electron下载慢" class="headerlink" title="Electron下载慢"></a>Electron下载慢</h2><p>安装<code>electron</code>时会自动最新的Electron二进制文件，由于文件比较大还容易墙，所以我们可以先配置好环境变量，再运行<code>yarn</code>或者<code>npm install</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ELECTRON_MIRROR=<span class="string">"https://npm.taobao.org/mirrors/electron/"</span></span><br><span class="line">yarn install</span><br></pre></td></tr></table></figure>
+<p><code>ELECTRON_MIRROR</code>表示<code>Electron</code>镜像地址，切换到国内淘宝源，速度会飞快 </p>
+<a id="more"></a>
+<h2 id="Electron-截图"><a href="#Electron-截图" class="headerlink" title="Electron 截图"></a>Electron 截图</h2><p>Electron里面其实有专门的截屏函数<a href="https://www.electronjs.org/docs/api/web-contents#contentscapturepagerect" target="_blank" rel="noopener">capturePage</a>, 但必须在主进程进行调用，可以在渲染进程通过<a href="https://www.electronjs.org/docs/api/remote" target="_blank" rel="noopener">remote</a>模快来调用，如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> takeScreenshot = <span class="function">(<span class="params"> savedFolderName = <span class="string">'screenShoots'</span> </span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> isNative = <span class="keyword">typeof</span> <span class="built_in">require</span> === <span class="string">'function'</span> &amp;&amp; !!<span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(isNative) &#123;</span><br><span class="line">            <span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line">            <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line">            <span class="keyword">const</span> &#123; remote &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line">            <span class="keyword">const</span> screenshotsDir = path.join(process.env.HOME || process.env.USERPROFILE, savedFolderName)</span><br><span class="line">            <span class="keyword">if</span> (!fs.existsSync(screenshotsDir)) &#123;</span><br><span class="line">                fs.mkdirSync(screenshotsDir)</span><br><span class="line">            &#125;</span><br><span class="line">            remote.getCurrentWindow().capturePage().then(<span class="function"><span class="params">img</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">const</span> name = <span class="built_in">Date</span>.now()</span><br><span class="line">                fs.writeFile(<span class="string">`<span class="subst">$&#123;screenshotsDir&#125;</span><span class="subst">$&#123;path.sep&#125;</span><span class="subst">$&#123;name&#125;</span>.png`</span>, img.toPNG(), err =&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span> (err != <span class="literal">null</span>) &#123;</span><br><span class="line">                        reject(err)</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        resolve(screenshotsDir)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            reject(<span class="string">'should be invoked in electron environment'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Electron-桌面分享"><a href="#Electron-桌面分享" class="headerlink" title="Electron 桌面分享"></a>Electron 桌面分享</h2><p>大家知道，在Google Chrome中可以调用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getDisplayMedia" target="_blank" rel="noopener">MediaDevices.getDisplayMedia()</a>来进行分享，不过很可惜， <code>Electron</code>没法使用该方法，具体issues可以参考 <a href="https://github.com/electron/electron/issues/16513" target="_blank" rel="noopener">getDisplayMedia with Chrome 72 throwing Not Allowed</a>。不过<code>Electron</code>中提供了<a href="https://www.electronjs.org/docs/api/desktop-capturer" target="_blank" rel="noopener">desktopCapturer</a>来获取桌面视频流，这样也可以进行屏幕共享。</p>
+<p>为了保证代码兼容性，并且在<code>Electron</code>进行屏幕分享，我们可以重写<code>window.navigator.mediaDevices</code>方法，保证代码无缝迁移。代码放在<code>preload.js</code>中即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; desktopCapturer &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line"><span class="built_in">window</span>.navigator.mediaDevices = <span class="built_in">window</span>.navigator.mediaDevices || &#123;&#125;</span><br><span class="line"><span class="built_in">window</span>.navigator.mediaDevices.getDisplayMedia = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="comment">// 获取所有可以分享的桌面或者窗口</span></span><br><span class="line">    <span class="keyword">const</span> sources = <span class="keyword">await</span> desktopCapturer.getSources(&#123; <span class="attr">types</span>: [<span class="string">'screen'</span>, <span class="string">'window'</span>] &#125;)</span><br><span class="line">    <span class="comment">// 为了方便，我们只选择全屏进行分享</span></span><br><span class="line">    <span class="keyword">const</span> source = sources.filter(<span class="function"><span class="params">source</span> =&gt;</span> source.name === <span class="string">'Entire Screen'</span> || source.name === <span class="string">'Electron'</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">if</span> (source) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> stream = <span class="keyword">await</span> navigator.mediaDevices.getUserMedia(&#123;</span><br><span class="line">                audio: <span class="literal">false</span>,</span><br><span class="line">                video: &#123;</span><br><span class="line">                  mandatory: &#123;</span><br><span class="line">                    chromeMediaSource: <span class="string">'desktop'</span>,</span><br><span class="line">                    chromeMediaSourceId: source.id,</span><br><span class="line">                    minWidth: <span class="number">1280</span>,</span><br><span class="line">                    maxWidth: <span class="number">1280</span>,</span><br><span class="line">                    minHeight: <span class="number">720</span>,</span><br><span class="line">                    maxHeight: <span class="number">720</span></span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="keyword">return</span> stream</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(e)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子只是进行全屏分享，如果想基于某个单独窗口分享，可以遍历<code>desktopCapturer.getSources({ types: [&#39;screen&#39;, &#39;window&#39;] })</code>返回的数据，弹出窗口，用户选择后进行分享。</p>
+<h2 id="Electron-全屏"><a href="#Electron-全屏" class="headerlink" title="Electron 全屏"></a>Electron 全屏</h2><p>在网页中，我们可以通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/requestFullScreen" target="_blank" rel="noopener">requestFullscreen</a>进入全屏，通过<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document/exitFullscreen" target="_blank" rel="noopener">Document.exitFullscreen</a>来退出全屏，不过在Electron，如果应用点击最大化按钮进入全屏后，上面的方法就失效了，我们可以在渲染进程中调用Electron的<a href="https://www.electronjs.org/docs/api/browser-window#winsetfullscreenflag" target="_blank" rel="noopener">setFullScreen</a>方法来控制全屏进入和退出 ，如下代码所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> utils = &#123;</span><br><span class="line">    isNative() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">typeof</span> <span class="built_in">require</span> === <span class="string">'function'</span> &amp;&amp; !!<span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> toggleFullScreen = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (utils.isNative()) &#123;</span><br><span class="line">        <span class="keyword">const</span> win = <span class="built_in">require</span>(<span class="string">'electron'</span>).remote.getCurrentWindow()</span><br><span class="line">        <span class="comment">// 检测当前Electron是否为全屏状态</span></span><br><span class="line">        <span class="keyword">const</span> isFullScreen =  win.fullScreen</span><br><span class="line">        win.setFullScreen(!isFullScreen)</span><br><span class="line">    &#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> isFullScreen =  <span class="built_in">document</span>.webkitIsFullScreen</span><br><span class="line">        <span class="keyword">if</span> (isFullScreen) &#123;</span><br><span class="line">            <span class="built_in">document</span>.webkitExitFullscreen()</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">document</span>.body.requestFullscreen()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关闭应用"><a href="#关闭应用" class="headerlink" title="关闭应用"></a>关闭应用</h2><p>这个比较简单，直接调用Electron中的<a href="https://www.electronjs.org/docs/api/browser-window#winclose" target="_blank" rel="noopener">close</a>方法即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> close = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    utils.isNative() &amp;&amp; <span class="built_in">require</span>(<span class="string">'electron'</span>).remote.getCurrentWindow().close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="electron-builder-打包后，input输入框粘贴、剪切失效的问题"><a href="#electron-builder-打包后，input输入框粘贴、剪切失效的问题" class="headerlink" title="electron-builder 打包后，input输入框粘贴、剪切失效的问题"></a>electron-builder 打包后，input输入框粘贴、剪切失效的问题</h2><p>这个问题很奇怪，直接通过<code>electron src/main/index.js</code> 运行时不会存在该问题，但是通过 <a href="https://www.electron.build/" target="_blank" rel="noopener">electron-builder</a> 构建后会存在该问题。我的Mac上就存在该问题。</p>
+<p>解决方案有两个，第一个方案是给应用增加菜单，比如网上的解决方案：</p>
+<p><a href="https://github.com/onmyway133/blog/issues/67" target="_blank" rel="noopener">https://github.com/onmyway133/blog/issues/67</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;app&#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line"><span class="keyword">const</span> Menu = <span class="built_in">require</span>(<span class="string">'electron'</span>).Menu</span><br><span class="line"></span><br><span class="line">app.on(<span class="string">'ready'</span>, () =&gt; &#123;</span><br><span class="line">  createWindow()</span><br><span class="line">  createMenu()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createMenu</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> application = &#123;</span><br><span class="line">    label: <span class="string">"Application"</span>,</span><br><span class="line">    submenu: [</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"About Application"</span>,</span><br><span class="line">        selector: <span class="string">"orderFrontStandardAboutPanel:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        type: <span class="string">"separator"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Quit"</span>,</span><br><span class="line">        accelerator: <span class="string">"Command+Q"</span>,</span><br><span class="line">        click: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          app.quit()</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> edit = &#123;</span><br><span class="line">    label: <span class="string">"Edit"</span>,</span><br><span class="line">    submenu: [</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Undo"</span>,</span><br><span class="line">        accelerator: <span class="string">"CmdOrCtrl+Z"</span>,</span><br><span class="line">        selector: <span class="string">"undo:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Redo"</span>,</span><br><span class="line">        accelerator: <span class="string">"Shift+CmdOrCtrl+Z"</span>,</span><br><span class="line">        selector: <span class="string">"redo:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        type: <span class="string">"separator"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Cut"</span>,</span><br><span class="line">        accelerator: <span class="string">"CmdOrCtrl+X"</span>,</span><br><span class="line">        selector: <span class="string">"cut:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Copy"</span>,</span><br><span class="line">        accelerator: <span class="string">"CmdOrCtrl+C"</span>,</span><br><span class="line">        selector: <span class="string">"copy:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Paste"</span>,</span><br><span class="line">        accelerator: <span class="string">"CmdOrCtrl+V"</span>,</span><br><span class="line">        selector: <span class="string">"paste:"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">"Select All"</span>,</span><br><span class="line">        accelerator: <span class="string">"CmdOrCtrl+A"</span>,</span><br><span class="line">        selector: <span class="string">"selectAll:"</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> template = [</span><br><span class="line">    application,</span><br><span class="line">    edit</span><br><span class="line">  ]</span><br><span class="line"></span><br><span class="line">  Menu.setApplicationMenu(Menu.buildFromTemplate(template))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为我们Electron不需要菜单, 所以第一种方式不合适； 所以我换了一种方式，直接在<code>document</code>中监听<code>onkeydown</code>事件来手动处理，如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> fixInputEvent = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; clipboard &#125; = <span class="built_in">require</span>(<span class="string">'electron'</span>)</span><br><span class="line">    <span class="keyword">const</span> keyCodes = &#123;</span><br><span class="line">        V: <span class="number">86</span>,</span><br><span class="line">        C: <span class="number">67</span>,</span><br><span class="line">        X: <span class="number">88</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">document</span>.onkeydown = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> activeElement =  event.target</span><br><span class="line">        <span class="keyword">if</span> (activeElement.tagName  !== <span class="string">'INPUT'</span>) <span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> startOffset = activeElement.selectionStart</span><br><span class="line">        <span class="keyword">const</span> endOffset = activeElement.selectionEnd</span><br><span class="line">        <span class="keyword">const</span> clipboardText = clipboard.readText()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(event.ctrlKey || event.metaKey)&#123;  <span class="comment">// detect ctrl or cmd</span></span><br><span class="line">            <span class="keyword">switch</span>(event.which) &#123;</span><br><span class="line">                <span class="keyword">case</span> keyCodes.V: &#123;</span><br><span class="line">                    activeElement.setRangeText(clipboardText, startOffset, endOffset, <span class="string">'end'</span>)</span><br><span class="line">                    activeElement.dispatchEvent(<span class="keyword">new</span> Event(<span class="string">'input'</span>, &#123; <span class="attr">bubbles</span>: <span class="literal">true</span>&#125;))</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">case</span> keyCodes.C: &#123;</span><br><span class="line">                    <span class="keyword">const</span> text = activeElement.value.substring(startOffset, endOffset)</span><br><span class="line">                    clipboard.writeText(text)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">case</span> keyCodes.X:  &#123;</span><br><span class="line">                    <span class="keyword">const</span> text = activeElement.value.substring(startOffset, endOffset)</span><br><span class="line">                    clipboard.writeText(text)</span><br><span class="line">                    activeElement.setRangeText(<span class="string">''</span>, startOffset, endOffset )</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码处理了 <code>CTRL + C</code>、<code>CTRL + V</code>已经<code>CTRL + X</code> 三种情况，也就是复制、粘贴和剪切三种场景， 用到了<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setRangeText" target="_blank" rel="noopener">HTMLInputElement.setRangeText()
+</a> 这个函数，解决了在指定光标处复制、粘贴以及剪切等问题。大家感兴趣可以看看。</p>
+<h2 id="electron-webpack-构建问题"><a href="#electron-webpack-构建问题" class="headerlink" title="electron-webpack 构建问题"></a>electron-webpack 构建问题</h2><p>开发用到了<a href="https://github.com/electron-userland/electron-webpack" target="_blank" rel="noopener">electron-webpack</a> 构建工具，由于我们渲染进程的代码（前端HTML、JavaScript等代码）是其它项目已经写好的，所以不需要进行渲染进程打包，可以在<code>package.json</code>中关闭渲染进程打包。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"electronWebpack"</span>: &#123;</span><br><span class="line">    <span class="comment">// 渲染进程无需打包</span></span><br><span class="line">    <span class="attr">"renderer"</span>: <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>既然关闭了渲染进程打包，那么我们已经写好的前端代码放在哪里呢？需要放在<code>static</code>文件夹， 并且在主进程中可以这样访问：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mainWindow = <span class="keyword">new</span> BrowserWindow(&#123;</span><br><span class="line">    width: <span class="number">1280</span>,</span><br><span class="line">    height: <span class="number">840</span>,</span><br><span class="line">    center: <span class="literal">true</span>,</span><br><span class="line">    autoHideMenuBar: <span class="literal">true</span>,</span><br><span class="line">    webPreferences: &#123;</span><br><span class="line">        webSecurity: <span class="literal">false</span>,</span><br><span class="line">        preload: path.join(__dirname, <span class="string">'preload.js'</span>),</span><br><span class="line">        nodeIntegration: <span class="literal">true</span>,</span><br><span class="line">        enableRemoteModule: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    title: <span class="string">'XXX视频会议'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">mainWindow.loadFile(path.join(__static, <span class="string">'index.html'</span>))</span><br></pre></td></tr></table></figure>
+<p>通过<code>electron-webpack</code>打包后，默认引入的第三方库都会默认设置为<code>external</code>, 所以如果引入了第三方库， 需要改下<code>package.json</code>, 增加<code>whiteListedModules</code>配置项，这样webpack才会把第三方法代码一起打包压缩。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">"electronWebpack": &#123;</span><br><span class="line">  "renderer": null,</span><br><span class="line">  "whiteListedModules": [</span><br><span class="line">    <span class="string">"open"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>electron-webpack</code>打包会默认生成<code>SourceMap</code>文件， 我们一般生产环境不需要<code>SourceMap</code>，程序运行时还会报<code>Uncaught Exception: Error: Cannot find module source-map-support/source-map-support.js</code> 错误， 原因是<code>electron-webpack</code>使用了<a href="https://www.webpackjs.com/plugins/banner-plugin/" target="_blank" rel="noopener">BannerPlugin</a>插件，默认会在打包后的文件中加入一句<code>require(&quot;source-map-support/source-map-support.js&quot;).install()</code>。</p>
+<p>我们可以修改<code>electron-webpack</code>的配置文件来删除<code>BannerPlugin</code>插件， 在<code>package.json</code>中增加如下配置：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  "electronWebpack": &#123;</span><br><span class="line">    "main": &#123;</span><br><span class="line">      "extraEntries": [</span><br><span class="line">        <span class="string">"@/preload.js"</span></span><br><span class="line">      ],</span><br><span class="line">      "webpackConfig": "electron.config.js"</span><br><span class="line">    &#125;,</span><br><span class="line">    "renderer": null,</span><br><span class="line">    "whiteListedModules": [</span><br><span class="line">      <span class="string">"open"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>electron.config.js</code>内容如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">config</span>) </span>&#123;</span><br><span class="line">    config.devtool = <span class="literal">false</span></span><br><span class="line">    config.plugins = config.plugins.filter(<span class="function"><span class="params">plugin</span> =&gt;</span> plugin.constructor.name !== <span class="string">'BannerPlugin'</span>)</span><br><span class="line">    <span class="keyword">return</span> config</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以解决<code>SourceMap</code>问题了。</p>
+<h2 id="MAC及Windows打包"><a href="#MAC及Windows打包" class="headerlink" title="MAC及Windows打包"></a>MAC及Windows打包</h2><p>打包主要使用 <a href="https://www.electron.build/" target="_blank" rel="noopener">electron-builder</a>来进行打包，我的<code>package.json</code>配置如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"dev"</span>: <span class="string">"cross-env NODE_ENV=development electron src/main/index.js"</span>,</span><br><span class="line">    <span class="attr">"compile"</span>: <span class="string">"cross-env NODE_ENV=production electron-webpack"</span>,</span><br><span class="line">    <span class="attr">"mac"</span>: <span class="string">"rm -rf release dist &amp;&amp; yarn compile &amp;&amp; electron-builder --mac --x64"</span>,</span><br><span class="line">    <span class="attr">"windows"</span>: <span class="string">"rm -rf release dist &amp;&amp; yarn compile &amp;&amp; electron-builder --win --x64"</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="attr">"build"</span>: &#123;</span><br><span class="line">    <span class="attr">"appId"</span>: <span class="string">"larry.asyncoder.com"</span>,</span><br><span class="line">    <span class="attr">"mac"</span>: &#123;</span><br><span class="line">      <span class="attr">"category"</span>: <span class="string">"asyncoder-web"</span>,</span><br><span class="line">      <span class="attr">"target"</span>: <span class="string">"dmg"</span>,</span><br><span class="line">      <span class="attr">"icon"</span>: <span class="string">"./icon.icns"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"win"</span>: &#123;</span><br><span class="line">      <span class="attr">"target"</span>: <span class="string">"portable"</span>,</span><br><span class="line">      <span class="attr">"icon"</span>: <span class="string">"./icon.png"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"directories"</span>: &#123;</span><br><span class="line">      <span class="attr">"output"</span>: <span class="string">"release/$&#123;platform&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行<code>yarn mac</code>和 <code>yarn windows</code>就可以生成Mac上的<code>dmg</code>和windows上的<code>exe</code>文件。</p>
+<p>值得说明的是， 在Mac上是没法直接对Windows环境进行打包的， 所以推荐使用<a href="https://www.docker.com/" target="_blank" rel="noopener">docker</a>来进行打包。安装好<code>Docker</code>, 命令行进入工程目录，运行如下代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm -ti \</span><br><span class="line"> --env-file &lt;(env | grep -iE <span class="string">'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_'</span>) \</span><br><span class="line"> --env ELECTRON_CACHE=<span class="string">"/root/.cache/electron"</span> \</span><br><span class="line"> --env ELECTRON_BUILDER_CACHE=<span class="string">"/root/.cache/electron-builder"</span> \</span><br><span class="line"> -v <span class="variable">$&#123;PWD&#125;</span>:/project \</span><br><span class="line"> -v <span class="variable">$&#123;PWD##*/&#125;</span>-node-modules:/project/node_modules \</span><br><span class="line"> -v ~/.cache/electron:/root/.cache/electron \</span><br><span class="line"> -v ~/.cache/electron-builder:/root/.cache/electron-builder \</span><br><span class="line"> electronuserland/builder:wine</span><br></pre></td></tr></table></figure>
+<p>进入以后，先运行<code>yarn</code>, 再运行<code>yarn windows</code>即可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+          
+            <a href="/tags/Electron/" rel="tag"># Electron</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/14/FFmpeg介绍/" rel="next" title="FFmpeg介绍">
+                <i class="fa fa-chevron-left"></i> FFmpeg介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/11/Docker使用简易指南/" rel="prev" title="Docker使用简易指南">
+                Docker使用简易指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Larry Zhao</p>
+              <p class="site-description motion-element" itemprop="description">Larry Zhao的个人博客，谈生活，聊技术，快乐每一天</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/flyingzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Electron下载慢"><span class="nav-number">1.</span> <span class="nav-text">Electron下载慢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Electron-截图"><span class="nav-number">2.</span> <span class="nav-text">Electron 截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Electron-桌面分享"><span class="nav-number">3.</span> <span class="nav-text">Electron 桌面分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Electron-全屏"><span class="nav-number">4.</span> <span class="nav-text">Electron 全屏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭应用"><span class="nav-number">5.</span> <span class="nav-text">关闭应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#electron-builder-打包后，input输入框粘贴、剪切失效的问题"><span class="nav-number">6.</span> <span class="nav-text">electron-builder 打包后，input输入框粘贴、剪切失效的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#electron-webpack-构建问题"><span class="nav-number">7.</span> <span class="nav-text">electron-webpack 构建问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAC及Windows打包"><span class="nav-number">8.</span> <span class="nav-text">MAC及Windows打包</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Larry Zhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <span>累计用户数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <span>累计访问次数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz',
+        appKey: '24OXXapw3lKnsOgWlAqF2EEI',
+        placeholder: '壮士来留个言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz", "24OXXapw3lKnsOgWlAqF2EEI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

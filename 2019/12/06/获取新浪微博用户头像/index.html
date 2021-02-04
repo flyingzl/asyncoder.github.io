@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="媒体处理,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在之前的在微信H5网页中获取用户基本信息一文中， 我们提到了如何在微信中获取用户信息，这一篇小文主要分析如何在新浪微博中获取用户信息，尤其是个人头像。">
+<meta name="keywords" content="媒体处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="获取新浪微博用户头像">
+<meta property="og:url" content="https://asyncoder.com/2019/12/06/获取新浪微博用户头像/index.html">
+<meta property="og:site_name" content="记录点滴生活，每天进步一点点">
+<meta property="og:description" content="在之前的在微信H5网页中获取用户基本信息一文中， 我们提到了如何在微信中获取用户信息，这一篇小文主要分析如何在新浪微博中获取用户信息，尤其是个人头像。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://g.asyncoder.com/images/20191206140942-1.jpg">
+<meta property="og:image" content="https://g.asyncoder.com/images/20191206141112-2.jpg">
+<meta property="og:image" content="https://g.asyncoder.com/images/20191206150701-3.jpg">
+<meta property="og:updated_time" content="2021-02-04T09:57:46.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="获取新浪微博用户头像">
+<meta name="twitter:description" content="在之前的在微信H5网页中获取用户基本信息一文中， 我们提到了如何在微信中获取用户信息，这一篇小文主要分析如何在新浪微博中获取用户信息，尤其是个人头像。">
+<meta name="twitter:image" content="https://g.asyncoder.com/images/20191206140942-1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://asyncoder.com/2019/12/06/获取新浪微博用户头像/">
+
+
+
+
+
+  <title>获取新浪微博用户头像 | 记录点滴生活，每天进步一点点</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录点滴生活，每天进步一点点</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://asyncoder.com/2019/12/06/获取新浪微博用户头像/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Zhao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录点滴生活，每天进步一点点">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">获取新浪微博用户头像</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-06T06:20:00+00:00">
+                2019-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端技术/" itemprop="url" rel="index">
+                    <span itemprop="name">前端技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/06/获取新浪微博用户头像/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/12/06/获取新浪微博用户头像/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/12/06/获取新浪微博用户头像/" class="leancloud_visitors" data-flag-title="获取新浪微博用户头像">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在之前的<a href="https://asyncoder.com/2018/09/21/在微信H5网页中获取用户基本信息/">在微信H5网页中获取用户基本信息</a>一文中， 我们提到了如何在微信中获取用户信息，这一篇小文主要分析如何在新浪微博中获取用户信息，尤其是个人头像。</p>
+<a id="more"></a>
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>和微信类似，微博也提供了<a href="http://jssdk.sinaapp.com/" target="_blank" rel="noopener">JSSDK</a>方便开发者使用。要想使用新浪微博的JSSDK，需要先<a href="https://open.weibo.com/apps/new?sort=mobile" target="_blank" rel="noopener">注册一个微连接应用</a>，创建好后，<strong>输入应用的安全域名地址</strong>就可以使用了。在使用JSSDK时， 微博会校验SDK是否在特定的安全域名下运行，否则会拒绝返回执行结果。</p>
+<p><img src="https://g.asyncoder.com/images/20191206140942-1.jpg" alt="创建微博应用"></p>
+<p><img src="https://g.asyncoder.com/images/20191206141112-2.jpg" alt="设置好安全域名"></p>
+<h2 id="引入JSSDK"><a href="#引入JSSDK" class="headerlink" title="引入JSSDK"></a>引入JSSDK</h2><p>根据<a href="http://jssdk.sinaapp.com/start.php" target="_blank" rel="noopener">官方文档</a>， 需要在<code>页面的HTML标签中增加XML命名空间</code>，如下代码所示：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns:wb</span>=<span class="string">"http://open.weibo.com/wb"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="note info"><p>如果不使用微博组件，只是单纯的使用JSSDK，可以不用增加XML命名空间</p></div>
+<p>同时引入对应的JSSDK</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=523439410"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将<code>523439410</code>改为创建应用的appKey即可。</p>
+<h2 id="使用JSSDK"><a href="#使用JSSDK" class="headerlink" title="使用JSSDK"></a>使用JSSDK</h2><p>JSSDK的使用可以参考官方的<a href="http://jssdk.sinaapp.com/api.php" target="_blank" rel="noopener">JSSDK API文档</a>， 接口都比较简单，主要调用新浪微博<a href="https://open.weibo.com/wiki/微博API" target="_blank" rel="noopener">OAuth API</a>。为了方便调试，新浪微博还提供了一个<a href="https://open.weibo.com/tools/apitest.php" target="_blank" rel="noopener">在线调试工具</a>，大家感兴趣也可以试试。具体来说，主要提供了下面的几个接口，我们一一简单说明下。</p>
+<h3 id="登入接口"><a href="#登入接口" class="headerlink" title="登入接口"></a>登入接口</h3><p>只需要调用<code>WB2.login</code>即可，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WB2.login(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 已经登入</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="退出接口"><a href="#退出接口" class="headerlink" title="退出接口"></a>退出接口</h3><p>只需要调用<code>WB2.logout</code>即可，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WB2.logout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 已经退出</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="检测是否登入接口"><a href="#检测是否登入接口" class="headerlink" title="检测是否登入接口"></a>检测是否登入接口</h3><p>只需要调用<code>WB2.checkLogin()</code>即可，例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loginStatus = WB2.checkLogin()</span><br></pre></td></tr></table></figure>
+<p></p>
+<h3 id="查询信息接口"><a href="#查询信息接口" class="headerlink" title="查询信息接口"></a>查询信息接口</h3><p>此步主要用于调用微博的OAuth API，需要先调用<code>WB2.anyWhere</code>，然后在其回调里面调用<code>parseCMD</code>接口。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">WB2.anyWhere(<span class="function"><span class="params">W</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取用户的uid</span></span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">'/account/get_uid.json'</span></span><br><span class="line">    <span class="keyword">const</span> params = &#123;&#125;</span><br><span class="line">    <span class="keyword">const</span> options = &#123;</span><br><span class="line">        method: <span class="string">'get'</span>,</span><br><span class="line">        cache: <span class="number">60</span></span><br><span class="line">    &#125;</span><br><span class="line">    W.parseCMD(url, (sResult, bStatus) =&gt;&#123;</span><br><span class="line">        <span class="comment">// bStauts用于标识是否正常返回结果</span></span><br><span class="line">        <span class="keyword">if</span>(bStatus) &#123;</span><br><span class="line">            <span class="comment">// 输出结果：&#123;uid: 1093567195&#125;</span></span><br><span class="line">            <span class="built_in">console</span>.log(sResult)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, params, options)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>上面的代码主要用于获取用户的uid，比如我们拿到了uid为<code>1093567195</code>的用户，现在我们查询该用户的基本信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">WB2.anyWhere(<span class="function"><span class="params">W</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 查询用户的基本信息</span></span><br><span class="line">    <span class="keyword">const</span> url = <span class="string">'/users/show.json'</span></span><br><span class="line">    <span class="keyword">const</span> params = &#123;<span class="attr">uid</span>: <span class="string">'1093567195'</span>&#125;</span><br><span class="line">    <span class="keyword">const</span> options = &#123;</span><br><span class="line">        method: <span class="string">'get'</span>,</span><br><span class="line">        cache: <span class="number">60</span></span><br><span class="line">    &#125;</span><br><span class="line">    W.parseCMD(url, (sResult, bStatus) =&gt;&#123;</span><br><span class="line">        <span class="comment">// bStauts用于标识是否正常返回结果</span></span><br><span class="line">        <span class="keyword">if</span>(bStatus) &#123;</span><br><span class="line">            <span class="comment">// 输出结果：&#123;93567195, idstr: "1093567195", class: 1, screen_name: "flyingzl", name: "flyingzl", …&#125;</span></span><br><span class="line">            <span class="built_in">console</span>.log(sResult)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, params, options)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>/users/show.json</code>这个接口主要用于查询用户的基本信息，具体可以参考<a href="https://open.weibo.com/wiki/2/users/show" target="_blank" rel="noopener">https://open.weibo.com/wiki/2/users/show</a>接口。里面有一个<code>avatar_large</code>字段，可以获取到用户的高清头像。</p>
+<h3 id="获取用户头像"><a href="#获取用户头像" class="headerlink" title="获取用户头像"></a>获取用户头像</h3><p>每次调用<code>WB2.anyWhere</code>和<code>W.parseCMD</code>比较麻烦，我们简单封装下，然后代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(<span class="function">(<span class="params">WB2</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> parseCMD = <span class="function">(<span class="params">url, params = &#123;&#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">            WB2.anyWhere(<span class="function"><span class="keyword">function</span> (<span class="params">W</span>) </span>&#123;</span><br><span class="line">                W.parseCMD(url, <span class="function"><span class="keyword">function</span> (<span class="params">sResult, bStatus</span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        bStatus ? resolve(sResult) : reject(sResult)</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (e) &#123; &#125;</span><br><span class="line">                &#125;, params, &#123;</span><br><span class="line">                    method: <span class="string">'get'</span>,</span><br><span class="line">                    cache: <span class="number">60</span></span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> isLoginPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> status = WB2.checkLogin()</span><br><span class="line">        status ? resolve() : WB2.login(resolve)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    isLoginPromise.then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> queryUIDPromise = parseCMD(<span class="string">'/account/get_uid.json'</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> res.uid)</span><br><span class="line">        <span class="keyword">const</span> queryAvatarPromise = queryUIDPromise.then(<span class="function"><span class="params">uid</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> parseCMD(<span class="string">'/users/show.json'</span>, &#123; uid &#125;).then(<span class="function"><span class="params">o</span> =&gt;</span> o.avatar_large)</span><br><span class="line">        &#125;)</span><br><span class="line">        queryAvatarPromise.then(<span class="function"><span class="params">url</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// url 为用户的头像</span></span><br><span class="line">            <span class="keyword">var</span> image = <span class="keyword">new</span> Image()</span><br><span class="line">            image.src = url</span><br><span class="line">            <span class="built_in">document</span>.body.appendChild(image)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)(<span class="built_in">window</span>.WB2)</span><br></pre></td></tr></table></figure>
+<p><img src="https://g.asyncoder.com/images/20191206150701-3.jpg" alt="效果"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/媒体处理/" rel="tag"># 媒体处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/29/whistle使用介绍/" rel="next" title="whistle使用介绍">
+                <i class="fa fa-chevron-left"></i> whistle使用介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/20/WebAssembly简介/" rel="prev" title="WebAssembly简介">
+                WebAssembly简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Larry Zhao</p>
+              <p class="site-description motion-element" itemprop="description">Larry Zhao的个人博客，谈生活，聊技术，快乐每一天</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/flyingzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入JSSDK"><span class="nav-number">2.</span> <span class="nav-text">引入JSSDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用JSSDK"><span class="nav-number">3.</span> <span class="nav-text">使用JSSDK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登入接口"><span class="nav-number">3.1.</span> <span class="nav-text">登入接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出接口"><span class="nav-number">3.2.</span> <span class="nav-text">退出接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检测是否登入接口"><span class="nav-number">3.3.</span> <span class="nav-text">检测是否登入接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询信息接口"><span class="nav-number">3.4.</span> <span class="nav-text">查询信息接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取用户头像"><span class="nav-number">3.5.</span> <span class="nav-text">获取用户头像</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Larry Zhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <span>累计用户数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <span>累计访问次数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz',
+        appKey: '24OXXapw3lKnsOgWlAqF2EEI',
+        placeholder: '壮士来留个言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz", "24OXXapw3lKnsOgWlAqF2EEI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

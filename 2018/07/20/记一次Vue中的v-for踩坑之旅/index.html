@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vue,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="用过Vue的同学都知道，v-for指令常用于遍历数组或者对象，然后依次渲染出指定的内容。同时，我们也知道，官方文档也建议，在使用v-for指令时，记得要加上key属性，方便提升应用性能。例如一个简单的增删Todo应用如下所示： 1234567891011121314151617181920212223242526272829303132333435363738&amp;lt;template&amp;gt;">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次Vue中的v-for踩坑之旅">
+<meta property="og:url" content="https://asyncoder.com/2018/07/20/记一次Vue中的v-for踩坑之旅/index.html">
+<meta property="og:site_name" content="记录点滴生活，每天进步一点点">
+<meta property="og:description" content="用过Vue的同学都知道，v-for指令常用于遍历数组或者对象，然后依次渲染出指定的内容。同时，我们也知道，官方文档也建议，在使用v-for指令时，记得要加上key属性，方便提升应用性能。例如一个简单的增删Todo应用如下所示： 1234567891011121314151617181920212223242526272829303132333435363738&amp;lt;template&amp;gt;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://g.asyncoder.com/20180720-01.png">
+<meta property="og:image" content="https://g.asyncoder.com/20180720-02.png">
+<meta property="og:image" content="https://g.asyncoder.com/20180720-04.png">
+<meta property="og:image" content="https://g.asyncoder.com/20180720-05.png">
+<meta property="og:updated_time" content="2021-02-04T09:57:46.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次Vue中的v-for踩坑之旅">
+<meta name="twitter:description" content="用过Vue的同学都知道，v-for指令常用于遍历数组或者对象，然后依次渲染出指定的内容。同时，我们也知道，官方文档也建议，在使用v-for指令时，记得要加上key属性，方便提升应用性能。例如一个简单的增删Todo应用如下所示： 1234567891011121314151617181920212223242526272829303132333435363738&amp;lt;template&amp;gt;">
+<meta name="twitter:image" content="https://g.asyncoder.com/20180720-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://asyncoder.com/2018/07/20/记一次Vue中的v-for踩坑之旅/">
+
+
+
+
+
+  <title>记一次Vue中的v-for踩坑之旅 | 记录点滴生活，每天进步一点点</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录点滴生活，每天进步一点点</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://asyncoder.com/2018/07/20/记一次Vue中的v-for踩坑之旅/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Zhao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录点滴生活，每天进步一点点">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">记一次Vue中的v-for踩坑之旅</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-20T09:30:00+00:00">
+                2018-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端技术/" itemprop="url" rel="index">
+                    <span itemprop="name">前端技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/20/记一次Vue中的v-for踩坑之旅/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/20/记一次Vue中的v-for踩坑之旅/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/07/20/记一次Vue中的v-for踩坑之旅/" class="leancloud_visitors" data-flag-title="记一次Vue中的v-for踩坑之旅">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>用过Vue的同学都知道，<code>v-for</code>指令常用于遍历数组或者对象，然后依次渲染出指定的内容。同时，我们也知道，官方文档也建议，在使用<code>v-for</code>指令时，记得要加上<code>key</code>属性，方便提升应用性能。例如一个简单的增删Todo应用如下所示：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"todos"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model.trim</span>=<span class="string">"task"</span> @<span class="attr">keypress.enter</span>=<span class="string">"onSaveTodo"</span> <span class="attr">placeholder</span>=<span class="string">"请输入待办任务"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(todo, index) in todos"</span> <span class="attr">:key</span>=<span class="string">"index"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">span</span> @<span class="attr">click</span>=<span class="string">"onRemoveTodo(index)"</span>&gt;</span>&#123;&#123; todo &#125;&#125; <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"remove"</span>&gt;</span><span class="symbol">&amp;times;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">        name: <span class="string">'TodoApp'</span>,</span></span><br><span class="line">        data() &#123;</span><br><span class="line"><span class="javascript">            <span class="keyword">return</span> &#123;</span></span><br><span class="line">                todos: [],</span><br><span class="line"><span class="javascript">                task: <span class="string">''</span></span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        methods: &#123;</span><br><span class="line">            onSaveTodo() &#123;</span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.todos.push(<span class="keyword">this</span>.task)</span></span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.task = <span class="string">''</span></span></span><br><span class="line">            &#125;,</span><br><span class="line">            onRemoveTodo(index) &#123;</span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.todos.splice(index, <span class="number">1</span>)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">.todos .remove &#123;</span><br><span class="line">    color: #ff0000;</span><br><span class="line">    cursor: pointer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p data-height="400" data-theme-id="0" data-slug-hash="wjNxoP" data-default-tab="js" data-user="flyingzl" data-embed-version="2" data-pen-title="vue-v-for" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/flyingzl/pen/wjNxoP/" target="_blank" rel="noopener">vue中v-for使用</a></p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+<p>代码很简单明了，也运行的很高效。我们用了<code>v-for</code>指令，也加了<code>key</code>, 一切都和完美，感叹Vue真好用，真是高效哇！</p>
+<h1 id="组件封装"><a href="#组件封装" class="headerlink" title="组件封装"></a>组件封装</h1><p>在Vue中，官方建议我们多进行组件封装和抽象，这样方便后期维护。因为每一个Todo都有自己的状态，例如完成或者未完成， 我们需要将每一个Todo抽象为组件。所以我们要做一下简单的改进：新建一个<code>TodoItem.vue</code>，然后在主文件中导入使用</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"todo-item"</span> <span class="attr">:class</span>=<span class="string">"&#123;checked: checked&#125;"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">v-model</span>=<span class="string">"checked"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span> @<span class="attr">click</span>=<span class="string">"onRemoveItem"</span>&gt;</span>&#123;&#123; todo &#125;&#125; <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"remove"</span>&gt;</span><span class="symbol">&amp;times;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    name: <span class="string">'TodoItem'</span></span></span><br><span class="line">    props: &#123;</span><br><span class="line"><span class="javascript">        todo: <span class="built_in">String</span></span></span><br><span class="line">    &#125;,</span><br><span class="line">    data() &#123;</span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">            checked: <span class="literal">false</span></span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        onRemoveItem() &#123;</span><br><span class="line"><span class="javascript">            <span class="keyword">this</span>.$emit(<span class="string">'remove'</span>)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">    .todo-item.checked .label &#123;</span><br><span class="line">        text-decoration: line-through;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码非常简单，我们在<code>TodoItem.vue</code>中新增加了一个<code>checked</code>属性，当复选框勾选后，todo文字会显示删除效果。重新修改下主文件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"todos"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model.trim</span>=<span class="string">"task"</span> @<span class="attr">keypress.enter</span>=<span class="string">"onSaveTodo"</span> <span class="attr">placeholder</span>=<span class="string">"请输入待办任务"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(todo, index) in todos"</span> <span class="attr">:key</span>=<span class="string">"index"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">todo-item</span> <span class="attr">:todo</span>=<span class="string">"todo"</span> @<span class="attr">remove</span>=<span class="string">"onRemoveTodo(index)"</span>&gt;</span><span class="tag">&lt;/<span class="name">todo-item</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">import</span> TodoItem <span class="keyword">from</span> <span class="string">'./TodoItem'</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">        name: <span class="string">'TodoApp'</span>,</span></span><br><span class="line">        components: &#123;</span><br><span class="line">            TodoItem</span><br><span class="line">        &#125;,</span><br><span class="line">        data() &#123;</span><br><span class="line"><span class="javascript">            <span class="keyword">return</span> &#123;</span></span><br><span class="line">                todos: [],</span><br><span class="line"><span class="javascript">                task: <span class="string">''</span></span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        methods: &#123;</span><br><span class="line">            onSaveTodo() &#123;</span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.todos.push(<span class="keyword">this</span>.task)</span></span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.task = <span class="string">''</span></span></span><br><span class="line">            &#125;,</span><br><span class="line"></span><br><span class="line">            onRemoveTodo(index) &#123;</span><br><span class="line"><span class="javascript">                <span class="keyword">this</span>.todos.splice(index, <span class="number">1</span>)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">.todos .remove &#123;</span><br><span class="line">    color: #ff0000;</span><br><span class="line">    cursor: pointer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码变化不大，只是在<code>v-for</code>循环时加入了<code>&lt;todo-item&gt;&lt;/todo-item&gt;</code>而已。看看运行效果</p>
+
+<p data-height="500" data-theme-id="0" data-slug-hash="JBbaeR" data-default-tab="js,result" data-user="flyingzl" data-embed-version="2" data-pen-title="vue中v-for使用（组建嵌套）" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/flyingzl/pen/JBbaeR/" target="_blank" rel="noopener">vue中v-for使用（组建嵌套）</a></p>
+
+<p><img src="https://g.asyncoder.com/20180720-01.png" alt></p>
+<p>好像没啥问题？ 但是如果我们增加两条数据，将第一条记录勾选后然后再删除，令人费解的事情发生了：</p>
+<p><img src="https://g.asyncoder.com/20180720-02.png" alt></p>
+<p>可以清晰地看到，第二条记录之前是未勾选状态，但是删除第一条后，它变成了勾选状态？这是为什么呢？</p>
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>这个问题其实我现实项目中的一个抽象，当时我也遇到了类似的问题，想了好几个小时都没解决。我一行一行分析我的代码，是不是代码哪里写错了？最后一行一行分析，突然想到是不是<code>key</code>用的不对？于是我将<code>key</code>弄成一个唯一的id，然后奇迹发生了，页面都正常了。这是为什么呢？</p>
+<p>在我们的例子，如果我们我们将<code>v-for</code>中的<code>key</code>改成如下所示（保证todo不重复）问题就解决了：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 为了演示访问表，假设todo是永不相同的  --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">"(todo, index) in todos"</span> <span class="attr">:key</span>=<span class="string">"todo"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> @<span class="attr">click</span>=<span class="string">"onRemoveTodo(index)"</span>&gt;</span>&#123;&#123; todo &#125;&#125; <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"remove"</span>&gt;</span><span class="symbol">&amp;times;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>虽然当时问题是解决了，但是这个<code>v-for</code>的问题一直在困扰我，到底是什么原因导致这种现象发生，为什么<code>key</code>弄成唯一的id就好使了呢？官方说在<code>v-for</code>时增加<code>key</code>可以提升应用性能，到底是怎么提升的？ </p>
+<p>刚好最近在看Vue Virtual DOM的diff算法，终于从中间找到了解决该问题的曙光</p>
+<h1 id="Vue中的Virtual-DOM"><a href="#Vue中的Virtual-DOM" class="headerlink" title="Vue中的Virtual DOM"></a>Vue中的Virtual DOM</h1><p>在Vue中，<code>template</code>中的内容最后都会被解析并渲染为<a href="https://github.com/answershuto/learnVue/blob/master/docs/VNode%E8%8A%82%E7%82%B9.MarkDown" target="_blank" rel="noopener">VNode</a>, 这个就是所谓的Virtual DOM。当我们修改Vue中的数据后，Vue会对前后两次的VNode进行diff，找出最小的差异，然后再渲染DOM，这样可以提高应用的性能。</p>
+<p>VNode其实是对真实DOM的Javascript抽象，例如一个简答的DOM树如下所示：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"test"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span>hello,VNode<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在VNode中，会这样进行展示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    tag: <span class="string">'div'</span></span><br><span class="line">    data: &#123;</span><br><span class="line">        class: 'test'</span><br><span class="line">    &#125;,</span><br><span class="line">    children: [</span><br><span class="line">        &#123;</span><br><span class="line">            tag: <span class="string">'span'</span>,</span><br><span class="line">            data: &#123;</span><br><span class="line">                class: 'demo'</span><br><span class="line">            &#125;</span><br><span class="line">            text: <span class="string">'hello,VNode'</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，VNode可以真实描述并还原DOM。</p>
+<h1 id="Virtual-DOM-diff算法"><a href="#Virtual-DOM-diff算法" class="headerlink" title="Virtual DOM diff算法"></a>Virtual DOM diff算法</h1><blockquote>
+<p>Vue中的Virtual DOM diff算法比较复杂，一言两语无法描述清楚。由于网上已经有很多文章，我这里只针对<code>v-for</code>问题进行针对性解释。</p>
+</blockquote>
+<p>我们先看看diff的核心函数（这些是源码的抽象，源码里面更为复杂）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span> (<span class="params">oldVNode, vnode, parentElm</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!oldVnode) &#123;</span><br><span class="line">        addVnodes(parentElm, <span class="literal">null</span>, vnode, <span class="number">0</span>, vnode.length - <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!vnode) &#123;</span><br><span class="line">        removeVnodes(parentElm, oldVnode, <span class="number">0</span>, oldVnode.length - <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (sameVnode(oldVNode, vnode)) &#123;</span><br><span class="line">            patchVnode(oldVNode, vnode);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            removeVnodes(parentElm, oldVnode, <span class="number">0</span>, oldVnode.length - <span class="number">1</span>);</span><br><span class="line">            addVnodes(parentElm, <span class="literal">null</span>, vnode, <span class="number">0</span>, vnode.length - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>patch</code>就是比较前后两个<code>VNode</code>，然后找出其最小差异并修改、创建或者删除DOM。在该函数中，<code>oldVNode</code>代表旧的数据，<code>vnode</code>代表最新的数据。比较时，会进行深度优先逐层进行比较。如下图所示：</p>
+<p><img src="https://g.asyncoder.com/20180720-04.png" alt><br><img src="https://g.asyncoder.com/20180720-05.png" alt></p>
+<p>也就是说，在上图中，只有相同颜色的VNode才进行比较，这样算法复杂度就比较低，整体下来只有O(n)，效率算法非常高了。</p>
+<p>从<code>patch</code>函数可以看出，diff算法的的核心逻辑是这样的：</p>
+<ul>
+<li>如果旧的VNode不存在，新的VNode存在，则创建新的DOM</li>
+<li>如果旧的VNode存在，新的VNode不存在，则删除旧的DOM</li>
+<li>如果新旧两个VNode都存在并相同，则找出最小差异然后更新DOM</li>
+<li>如果新旧两个VNode都存但不相同，则将旧的DOM删除，然后创建新的DOM</li>
+</ul>
+<p>这里的关键是：如何判断两个<code>VNode</code>相同呢？请看下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameInputType</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (a.tag !== <span class="string">'input'</span>) <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    <span class="keyword">let</span> i</span><br><span class="line">    <span class="keyword">const</span> typeA = (i = a.data) &amp;&amp; (i = i.attrs) &amp;&amp; i.type</span><br><span class="line">    <span class="keyword">const</span> typeB = (i = b.data) &amp;&amp; (i = i.attrs) &amp;&amp; i.type</span><br><span class="line">    <span class="keyword">return</span> typeA === typeB</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        a.key === b.key &amp;&amp;</span><br><span class="line">        a.tag === b.tag &amp;&amp;</span><br><span class="line">        a.isComment === b.isComment &amp;&amp;</span><br><span class="line">        !!a.data === !!b.data &amp;&amp;</span><br><span class="line">        sameInputType(a, b)</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，只有当 key、 tag、 isComment（是否为注释节点）相同、 data同时定义（或不定义），同时满足当标签类型为input的时候type相同，那么它们就是相同的VNode。</p>
+<p>注意这里的<strong>key</strong>相同，才代表VNode相同。对比我们之前出错的样例，因为我们的key是索引号，可知第一条记录的索引号为0。当第一条记录被删除后，第二条记录的key的索引号会从1变为0，这样导致了两者的key相同。因为key相同时，diff算法会认为它们是相同的VNode，那么旧的VNode（如果VNode是一个组件，它有一个componentInstance指向Vue实例）指向的Vue实例会被复用，导致显示出错。修改key为唯一id时，根据上文<code>patch</code>函数的逻辑，旧的VNode所对应的DOM会被干掉，然后得新的DOM会被创建。因为是新创建的DOM，那么对应的Vue也是新创建的，一切就会显示正常。</p>
+<p>所以，保证<code>key</code>唯一，就可以解决组件出错的问题。</p>
+<p>上文中，我们没有提到diff算法的核心，也就是说当两个VNode相同时，<code>patchVnode</code>是怎么实现的。建议大家阅读相关参考文章。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><code>v-for</code>使用非常简单，但是要特别注意<code>key</code>的使用。官方之所以说加上<code>key</code>会提升应用性能是因为：<code>key</code>相同时，两个VNode会相同，可以避免不必要的DOM更新。而且在diff内部，也会根据<code>key</code>来跟踪VNode。但是，官方也说了，尽量保证<code>key</code>是唯一的id，这样可以避免一些匪夷所思的bug。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p><a href="https://github.com/answershuto/learnVue/blob/master/docs/VirtualDOM%E4%B8%8Ediff(Vue%E5%AE%9E%E7%8E%B0" target="_blank" rel="noopener">VirtualDOM与diff(Vue实现).MarkDown</a>.MarkDown)</p>
+</li>
+<li><p><a href="https://github.com/answershuto/VueDemo/blob/master/%E3%80%8A%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E6%9B%B4%E6%96%B0%E6%97%B6%E7%9A%84%E5%B7%AE%E5%BC%82%20diff%20%E5%8F%8A%20patch%20%E6%9C%BA%E5%88%B6%E3%80%8B.js" target="_blank" rel="noopener">数据状态更新时的差异 diff 及 patch 机制</a></p>
+</li>
+<li><p><a href="https://segmentfault.com/a/1190000008782928" target="_blank" rel="noopener">解析vue2.0的diff算法</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/wind-lanyan/p/9061684.html" target="_blank" rel="noopener">详解vue的diff算法</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/17/你真的了解Javascript执行顺序么？/" rel="next" title="你真的了解Javascript执行顺序么？">
+                <i class="fa fa-chevron-left"></i> 你真的了解Javascript执行顺序么？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/27/利用Golang玩转WebAssembly/" rel="prev" title="利用Golang玩转WebAssembly">
+                利用Golang玩转WebAssembly <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Larry Zhao</p>
+              <p class="site-description motion-element" itemprop="description">Larry Zhao的个人博客，谈生活，聊技术，快乐每一天</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/flyingzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#组件封装"><span class="nav-number">1.</span> <span class="nav-text">组件封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题分析"><span class="nav-number">2.</span> <span class="nav-text">问题分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue中的Virtual-DOM"><span class="nav-number">3.</span> <span class="nav-text">Vue中的Virtual DOM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Virtual-DOM-diff算法"><span class="nav-number">4.</span> <span class="nav-text">Virtual DOM diff算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Larry Zhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <span>累计用户数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <span>累计访问次数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz',
+        appKey: '24OXXapw3lKnsOgWlAqF2EEI',
+        placeholder: '壮士来留个言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz", "24OXXapw3lKnsOgWlAqF2EEI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

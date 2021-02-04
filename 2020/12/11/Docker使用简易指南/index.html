@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Docker,Node.js,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Docker 是什么？定义Docker 是一个基于Go语言开发的应用容器引擎，它遵循了Apache2.0协议开源。Docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的Linux服务器，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类iPhone的app），并且容器开销极其低。 同类技术开源的VirtualBox、QEMU(quick">
+<meta name="keywords" content="Docker,Node.js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker使用简易指南">
+<meta property="og:url" content="https://asyncoder.com/2020/12/11/Docker使用简易指南/index.html">
+<meta property="og:site_name" content="记录点滴生活，每天进步一点点">
+<meta property="og:description" content="Docker 是什么？定义Docker 是一个基于Go语言开发的应用容器引擎，它遵循了Apache2.0协议开源。Docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的Linux服务器，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类iPhone的app），并且容器开销极其低。 同类技术开源的VirtualBox、QEMU(quick">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210135256-v2-0327d6666507f8716c3d3630fa4cb671_r.jpg">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201211155705-engine-components-flow.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210140553-docker-arch1.jpg">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210141206-576507-docker1.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210142316-image-20201210142314530.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210173546-image-20201210173545494.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210153733-image-20201210153731282.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210154028-image-20201210154026575.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210154315-image-20201210154314535.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210160252-image-20201210160250881.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210163240-image-20201210163239033.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210164357-image-20201210164355778.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210163644-image-20201210163642819.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210163718-image-20201210163716443.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210164530-image-20201210164529246.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210165554-image-20201210165552582.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210175415-image-20201210175414519.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210172605-image-20201210172604018.png">
+<meta property="og:image" content="https://g.asyncoder.com/images/20201210172806-image-20201210172805229.png">
+<meta property="og:updated_time" content="2021-02-04T09:57:46.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker使用简易指南">
+<meta name="twitter:description" content="Docker 是什么？定义Docker 是一个基于Go语言开发的应用容器引擎，它遵循了Apache2.0协议开源。Docker可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的Linux服务器，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类iPhone的app），并且容器开销极其低。 同类技术开源的VirtualBox、QEMU(quick">
+<meta name="twitter:image" content="https://g.asyncoder.com/images/20201210135256-v2-0327d6666507f8716c3d3630fa4cb671_r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://asyncoder.com/2020/12/11/Docker使用简易指南/">
+
+
+
+
+
+  <title>Docker使用简易指南 | 记录点滴生活，每天进步一点点</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">记录点滴生活，每天进步一点点</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">个人博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://asyncoder.com/2020/12/11/Docker使用简易指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Larry Zhao">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="记录点滴生活，每天进步一点点">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Docker使用简易指南</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-11T07:00:00+00:00">
+                2020-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统软件/" itemprop="url" rel="index">
+                    <span itemprop="name">系统软件</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/11/Docker使用简易指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/12/11/Docker使用简易指南/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/12/11/Docker使用简易指南/" class="leancloud_visitors" data-flag-title="Docker使用简易指南">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Docker-是什么？"><a href="#Docker-是什么？" class="headerlink" title="Docker 是什么？"></a>Docker 是什么？</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><strong>Docker</strong> 是一个基于Go语言开发的应用容器引擎，它遵循了Apache2.0协议开源。<strong>Docker</strong>可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的Linux服务器，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类iPhone的app），并且容器开销极其低。</p>
+<h2 id="同类技术"><a href="#同类技术" class="headerlink" title="同类技术"></a>同类技术</h2><p>开源的VirtualBox、QEMU(quick emulator)、KVM, 商业VMware、 Parallels desktop</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><img src="https://g.asyncoder.com/images/20201210135256-v2-0327d6666507f8716c3d3630fa4cb671_r.jpg" alt="preview"></p>
+<p>Docker容器可以在Mac/Windows/Linux等主机上运行，并与其他容器共享主机的内核，它运行的一个独立的进程，不占用其他任何可执行文件的内存，非常轻量。Docker镜像一般都是MB级别。</p>
+<p>虚拟机运行的是一个完成的操作系统，通过虚拟机管理程序对主机资源进行虚拟访问，相比之下需要的资源更多，虚拟机镜像都是GB级别。</p>
+<p>当然虚拟机的隔离性更好 ，因为它完全虚拟了一个操作系统，在隔离性特别高的场景下，用虚拟机更为合适，比如一个我们买的VPS，都是一个虚拟机。</p>
+<a id="more"></a>
+<h2 id="Docker架构"><a href="#Docker架构" class="headerlink" title="Docker架构"></a>Docker架构</h2><p><img src="https://g.asyncoder.com/images/20201211155705-engine-components-flow.png" alt="Docker Engine Components Flow"></p>
+<p><img src="https://g.asyncoder.com/images/20201210140553-docker-arch1.jpg" alt="img"></p>
+<p>Docker 是一个 C/S 模式的架构，后端是一个松耦合架构，模块各司其职。</p>
+<ol>
+<li>用户是使用 Docker Client 与 Docker Daemon 建立通信，并发送请求给后者。</li>
+<li>Docker Daemon 作为 Docker 架构中的主体部分，首先提供 Docker Server 的功能使其可以接受 Docker Client 的请求。</li>
+<li>Docker Engine 执行 Docker 内部的一系列工作，每一项工作都是以一个 Job 的形式的存在。</li>
+<li>Job 的运行过程中，当需要容器镜像时，则从 Docker Registry 中下载镜像，并通过镜像管理驱动 Graphdriver 将下载镜像以 Graph 的形式存储。</li>
+<li>当需要为 Docker 创建网络环境时，通过网络管理驱动 Networkdriver 创建并配置 Docker容器网络环境。</li>
+<li>当需要限制 Docker 容器运行资源或执行用户指令等操作时，则通过 Execdriver 来完成。</li>
+<li>Libcontainer 是一项独立的容器管理包，Networkdriver 以及 Execdriver 都是通过 Libcontainer 来实现具体对容器进行的操作。</li>
+</ol>
+<h2 id="一些术语"><a href="#一些术语" class="headerlink" title="一些术语"></a>一些术语</h2><p>Docker 包括三个基本概念:</p>
+<ul>
+<li><strong>镜像（Image）</strong>：相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu 16.04 最小系统的 root 文件系统。</li>
+<li><strong>容器（Container）</strong>：镜像（Image）和容器（Container）的关系，就像是<strong>面向对象程序设计中的类和实例一样</strong>，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</li>
+<li><strong>仓库（Repository）</strong>：仓库可看成一个代码控制中心，用来保存镜像，类似于npm的registry，用户可以 上传自己制作好的镜像。</li>
+</ul>
+<p><img src="https://g.asyncoder.com/images/20201210141206-576507-docker1.png" alt="img"></p>
+<h1 id="为什么会出现"><a href="#为什么会出现" class="headerlink" title="为什么会出现"></a>为什么会出现</h1><h2 id="解决什么问题"><a href="#解决什么问题" class="headerlink" title="解决什么问题"></a>解决什么问题</h2><ul>
+<li>Docker解决了运行环境和配置问题，方便发布，方便做持续集成，完美解决【在我的电脑上能跑，在XX环境就跑步了】的情况</li>
+<li>更轻量的虚拟化，节省了虚拟机的性能损耗</li>
+</ul>
+<h2 id="没这个技术之前怎么作"><a href="#没这个技术之前怎么作" class="headerlink" title="没这个技术之前怎么作"></a>没这个技术之前怎么作</h2><p>没使用Docker之前，用户会直接使用虚拟机部署来解决，这样导致：</p>
+<ul>
+<li>资源利用效率低</li>
+<li>单物理机多应用无法有效隔离</li>
+<li>运维部署不方便</li>
+<li>测试、版本管理复杂</li>
+<li>传统虚拟机占用空间大、启动慢、管理复杂</li>
+</ul>
+<h1 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h1><h2 id="Docker-环境安装"><a href="#Docker-环境安装" class="headerlink" title="Docker 环境安装"></a>Docker 环境安装</h2><p><a href="https://desktop.docker.com/mac/stable/Docker.dmg" target="_blank" rel="noopener">Docker Desktop for Mac</a></p>
+<p><a href="https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe" target="_blank" rel="noopener">Docker Desktop for Windows</a></p>
+<p><img src="https://g.asyncoder.com/images/20201210142316-image-20201210142314530.png" alt="image-20201210142314530"></p>
+<p>为了加快镜像拉取速度，需要修改下<code>Docker Engine</code>的镜像地址：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"debug"</span>:<span class="literal">true</span>,</span><br><span class="line">    <span class="attr">"experimental"</span>:<span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"registry-mirrors"</span>:[</span><br><span class="line">        <span class="string">"https://75r8zlet.mirror.aliyuncs.com"</span>,</span><br><span class="line">        <span class="string">"http://hub-mirror.c.163.com/"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Docker运行过程"><a href="#Docker运行过程" class="headerlink" title="Docker运行过程"></a>Docker运行过程</h2><p>Docker的运行过程可以简单的理解为，从远端仓库中拉取合适的镜像到本地–&gt;通过镜像创建容器–&gt;启动容器                                                                </p>
+<p><img src="https://g.asyncoder.com/images/20201210173546-image-20201210173545494.png" alt="image-20201210173545494"></p>
+<h2 id="Docker-容器使用"><a href="#Docker-容器使用" class="headerlink" title="Docker 容器使用"></a>Docker 容器使用</h2><h3 id="Hello-World运行"><a href="#Hello-World运行" class="headerlink" title="Hello World运行"></a>Hello World运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">➜  docker run --rm hello-world</span><br><span class="line">Unable to find image <span class="string">'hello-world:latest'</span> locally</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">0e03bdcc26d7: Pulling fs layer</span><br><span class="line">latest: Pulling from library/hello-world</span><br><span class="line">0e03bdcc26d7: Pull complete</span><br><span class="line">Digest: sha256:e7c70bb24b462baa86c102610182e3efcb12a04854e8c582838d92970a09f323</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> hello-world:latest</span><br><span class="line"></span><br><span class="line">Hello from Docker!</span><br><span class="line">This message shows that your installation appears to be working correctly.</span><br><span class="line"></span><br><span class="line">To generate this message, Docker took the following steps:</span><br><span class="line"> 1. The Docker client contacted the Docker daemon.</span><br><span class="line"> 2. The Docker daemon pulled the <span class="string">"hello-world"</span> image from the Docker Hub.</span><br><span class="line">    (amd64)</span><br><span class="line"> 3. The Docker daemon created a new container from that image <span class="built_in">which</span> runs the</span><br><span class="line">    executable that produces the output you are currently reading.</span><br><span class="line"> 4. The Docker daemon streamed that output to the Docker client, <span class="built_in">which</span> sent it</span><br><span class="line">    to your terminal.</span><br><span class="line"></span><br><span class="line">To try something more ambitious, you can run an Ubuntu container with:</span><br><span class="line"> $ docker run -it ubuntu bash</span><br><span class="line"></span><br><span class="line">Share images, automate workflows, and more with a free Docker ID:</span><br><span class="line"> https://hub.docker.com/</span><br><span class="line"></span><br><span class="line">For more examples and ideas, visit:</span><br><span class="line"> https://docs.docker.com/get-started/</span><br></pre></td></tr></table></figure>
+<h3 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h3><p><code>docker images</code>用于查看本地已拉取 镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ docker images</span><br><span class="line">REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">flyingzl/mrtc-server       v2                  b7fa95c740d8        21 hours ago        218MB</span><br><span class="line">flyingzl/invoice-ocr       latest              b5354990d5d4        5 days ago          8.35MB</span><br><span class="line">node                       latest              2d840844f8e7        2 weeks ago         935MB</span><br><span class="line">node                       lts-alpine3.12      870de9c16886        3 weeks ago         117MB</span><br><span class="line">electronuserland/builder   wine                2b534717a8c8        4 months ago        1.88GB</span><br><span class="line">mysql                      latest              e3fcc9e1cc04        4 months ago        544MB</span><br><span class="line">nginx                      latest              8cf1bfb43ff5        4 months ago        132MB</span><br><span class="line">mongo                      latest              6d11486a97a7        5 months ago        388MB</span><br><span class="line">alfg/nginx-rtmp            latest              db65d3c185cf        7 months ago        115MB</span><br><span class="line">kagamihi/ffmpeg.js         latest              09fd1823daed        7 months ago        1.38GB</span><br></pre></td></tr></table></figure>
+<h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><p><code>docker run</code>用于创建一个容器，容器创建成功后，会返回一个container ID, 通过改ID可以对容器进行停止、更新 或者删除操作。</p>
+<p><code>docker run -i -d --name node-demo node</code>可以生成一个名为<code>node-demo</code>的容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> ~ docker run -i -d --name node-demo node</span><br><span class="line">1f396e48e47c8c5fd6ee6851ff5436317c92258dbc92bda67ca4b5a24e0442cd</span><br></pre></td></tr></table></figure>
+<p>执行<code>docker ps</code>可以看到当前正在运行的容器</p>
+<p> <img src="https://g.asyncoder.com/images/20201210153733-image-20201210153731282.png" alt="image-20201210153731282"></p>
+<h3 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h3><p>执行<code>docker exec -it container-id bash</code>可以进入容器 内部</p>
+<p>这里<code>-i</code>打表<code>interactive</code>,表示可交互， <code>-t</code>表示<code>tty</code>，模拟一个伪终端。<code>-i</code>和<code>-t</code>一般是配合使用</p>
+<p><img src="https://g.asyncoder.com/images/20201210154028-image-20201210154026575.png" alt="image-20201210154026575"></p>
+<p>可以 看到， 容器其实就是一个Linux运行环境</p>
+<h3 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h3><p>默认情况下，容器和宿主机的网络是不通的，例如我在上文创建的容器中安装一个<code>http-server</code>,然后执行<code>http-server -p 3000</code>,在外部是没法访问的。</p>
+<p><img src="https://g.asyncoder.com/images/20201210154315-image-20201210154314535.png" alt="image-20201210154314535"></p>
+<p>通过<code>docker run  -i -d --name node-demo-port -p 3000:3000 node</code> 可以将本地的3000端口 和容器的3000端口进行映射， 这样就可以访问到容器</p>
+<p><img src="https://g.asyncoder.com/images/20201210160252-image-20201210160250881.png" alt="image-20201210160250881"></p>
+<p>如果想查看容器的端口映射情况，可以运行<code>docker port container-id</code>来进行查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ docker port ubuntu</span><br><span class="line">5900/tcp -&gt; 0.0.0.0:5900</span><br><span class="line">80/tcp -&gt; 0.0.0.0:6080</span><br><span class="line">➜  ~</span><br></pre></td></tr></table></figure>
+<h3 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h3><p><code>docker stop container-id/container-name</code>可以停止容器</p>
+<p><code>docker stop $(docker ps -aq)</code>可以量停止所有容器</p>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><p><code>docker start container-id/container-name</code>可以启动之前停止的 容器</p>
+<p><code>docker start $(docker ps -aq)</code>可以量启动之前所有停止的容器</p>
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p><code>docker rm container-id/container-name</code>可以停止容器</p>
+<p><code>docker rm $(docker ps -aq)</code>可以删除所有容器</p>
+<blockquote>
+<p><em>如果某个容器正在运行中</em>，删除容器时会提示错误<code>Error response from daemon: You cannot remove a running container XXXXX. Stop the container before attempting removal or force remove</code></p>
+</blockquote>
+<p>如果想强制删除，可以执行<code>docker rm -f container-id</code></p>
+<h3 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h3><p>使用某个容器后，如果进入容器后安装了新的软件或者增加新的功能，可以基于修改后的容器新建一个镜像，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建容器 </span></span><br><span class="line">docker run -id --name node-demo node</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line">docker <span class="built_in">exec</span> -it node-demo bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装一些新的软件, 更新下载镜像源</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># apt-get update</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># apt-get install apt-transport-https</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># apt-get  update</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># apt-get install vim  -y</span></span><br><span class="line">root@688e8e176515:/<span class="comment"># npm  install http-server -g</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出容器,将容器重新制作为一个镜像</span></span><br><span class="line">docker commit -a zhaolei -m <span class="string">"docker with node and vim"</span> node-demo node-vim:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新创建容器</span></span><br><span class="line">docker run -id --name node-vim-demo node-vim</span><br></pre></td></tr></table></figure>
+<p>镜像也可以从从外部导出导出，可以参考 <a href="https://www.hangge.com/blog/cache/detail_2411.html" target="_blank" rel="noopener">Docker镜像导入导出</a>一文：</p>
+<ul>
+<li><code>docker export</code>、<code>docker import</code> </li>
+<li><code>docker save</code>、<code>docker load</code></li>
+</ul>
+<h3 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h3><p><code>docker rmi image-id/image-name</code>可以删除镜像</p>
+<p><code>docker rmi $(docker images -aq)</code>可以删除所有镜像</p>
+<h3 id="文件拷贝"><a href="#文件拷贝" class="headerlink" title="文件拷贝"></a>文件拷贝</h3><p><code>docker cp local-file  conainer:container-path</code>复制宿主本地文件到容器</p>
+<p><code>docker cp container:container-path local-file</code> 复制容器文件到宿主本地 </p>
+<p><img src="https://g.asyncoder.com/images/20201210163240-image-20201210163239033.png" alt="image-20201210163239033"></p>
+<h3 id="文件目录映射"><a href="#文件目录映射" class="headerlink" title="文件目录映射"></a>文件目录映射</h3><p>Docker可以将宿主机的某个目录 映射到 容器，这样宿主机对文件进行修改，容器可以 读取到；反之怡然。</p>
+<p>可以增加<code>-v</code>参数即可。</p>
+<p><img src="https://g.asyncoder.com/images/20201210164357-image-20201210164355778.png" alt="image-20201210164355778"></p>
+<h3 id="查看日志"><a href="#查看日志" class="headerlink" title="查看日志"></a>查看日志</h3><p><code>docker logs -f containerId</code> 用于查看容器日志</p>
+<p><img src="https://g.asyncoder.com/images/20201210163644-image-20201210163642819.png" alt="image-20201210163642819"></p>
+<h3 id="输出格式化"><a href="#输出格式化" class="headerlink" title="输出格式化"></a>输出格式化</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a --format <span class="string">"table &#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> dps=<span class="string">'docker ps -a --format "table &#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Image&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"'</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://g.asyncoder.com/images/20201210163718-image-20201210163716443.png" alt="image-20201210163716443"></p>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><h2 id="发票识别"><a href="#发票识别" class="headerlink" title="发票识别"></a>发票识别</h2><p><code>docker run --rm -e USER=石头 -v ~/Downloads/images/:/opt/invoice/images flyingzl/invoice-ocr</code> 用于直接识别图片。</p>
+<p><code>~/Downloads/images</code>表示本地存放发票图片的路径，根据本机图片目录进行修改</p>
+<p><code>USER</code>用于修改 输出结果的显示名称</p>
+<p><img src="https://g.asyncoder.com/images/20201210164530-image-20201210164529246.png" alt="image-20201210164529246"></p>
+<h2 id="基于Nginx的RTMP推流"><a href="#基于Nginx的RTMP推流" class="headerlink" title="基于Nginx的RTMP推流"></a>基于Nginx的RTMP推流</h2><ol>
+<li><p><code>docker run --rm -itd -p 1935:1935 -p 8080:80 alfg/nginx-rtmp</code> 拉取并运行容器</p>
+</li>
+<li><p><code>ffmpeg -re -stream_loop -1 -i ~/Movies/霸王龙.mp4 -f flv 表示rtmp://127.0.0.1:1935/stream/demo</code>进行 视频循环推流， <code>demo</code>表示流名称 </p>
+</li>
+<li><code>ffplay http://127.0.0.1:8080/live/demo.m3u8</code>可以 播放HLS视频流</li>
+</ol>
+<p><img src="https://g.asyncoder.com/images/20201210165554-image-20201210165552582.png" alt="image-20201210165552582"></p>
+<h2 id="Mac上构建Electron-Windows应用"><a href="#Mac上构建Electron-Windows应用" class="headerlink" title="Mac上构建Electron Windows应用"></a>Mac上构建Electron Windows应用</h2><p>由于Mac上通过<code>electron-builder</code>来生成windows应用， 需要本机安装<code>wine</code>来模拟环境，比较麻烦，而且污染系统。可以考虑通过一个名为<a href="https://hub.docker.com/r/electronuserland/builder/" target="_blank" rel="noopener">electronuserland/builder</a>的Docker镜像来进行快速构建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> electron</span><br><span class="line">docker run -it --rm \</span><br><span class="line">--env ELECTRON_MIRROR=<span class="string">"https://npm.taobao.org/mirrors/electron/"</span> \</span><br><span class="line">--env ELECTRON_CACHE=<span class="string">"/root/.cache/electron"</span> \</span><br><span class="line">--env ELECTRON_BUILDER_CACHE=<span class="string">"/root/.cache/electron-builder"</span> \</span><br><span class="line">-v <span class="variable">$&#123;PWD&#125;</span>:/project \</span><br><span class="line">-v <span class="variable">$&#123;PWD##*/&#125;</span>-node-modules:/project/node_modules \</span><br><span class="line">-v ~/.cache/electron:/root/.cache/electron \</span><br><span class="line">-v ~/.cache/electron-builder:/root/.cache/electron-builder \</span><br><span class="line">electronuserland/builder:wine</span><br></pre></td></tr></table></figure>
+<p>安装好依赖，就 可以进行构建 windows应用了。</p>
+<h2 id="可视化管理Docker"><a href="#可视化管理Docker" class="headerlink" title="可视化管理Docker"></a>可视化管理Docker</h2><p>可以运行安装<code>portainer/portainer-ce</code>镜像对docker进行可视化管理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker volume create portainer_data</span><br><span class="line"></span><br><span class="line">docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce</span><br></pre></td></tr></table></figure>
+<p><img src="https://g.asyncoder.com/images/20201210175415-image-20201210175414519.png" alt="image-20201210175414519"></p>
+<h2 id="创建本地镜像"><a href="#创建本地镜像" class="headerlink" title="创建本地镜像"></a>创建本地镜像</h2><p>创建本地镜像需要事先生成一个<code>Dockerfile</code>文件，然后 执行输入类似下面的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">FROM node:lts-alpine3.12</span><br><span class="line"></span><br><span class="line">RUN <span class="built_in">echo</span> <span class="string">"http://mirrors.aliyun.com/alpine/v3.12/main/"</span> &gt; /etc/apk/repositories</span><br><span class="line"></span><br><span class="line">LABEL maintainer=<span class="string">"flyingzl"</span></span><br><span class="line"></span><br><span class="line">RUN apk update \</span><br><span class="line">        &amp;&amp; apk upgrade \</span><br><span class="line">        &amp;&amp; apk add --no-cache bash \</span><br><span class="line">        bash-doc \</span><br><span class="line">        bash-completion \</span><br><span class="line">        &amp;&amp; rm -rf /var/cache/apk/* \</span><br><span class="line">        &amp;&amp; /bin/bash</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">RUN mkdir -p /home/node/app/node_modules</span><br><span class="line"></span><br><span class="line">WORKDIR /home/node/app</span><br><span class="line"></span><br><span class="line">COPY package*.json ./</span><br><span class="line"></span><br><span class="line">COPY . .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">RUN npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org/</span><br><span class="line"></span><br><span class="line">RUN npm install</span><br><span class="line"></span><br><span class="line">RUN npm rum build</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"node"</span>, <span class="string">"dist/bin/server.js"</span>]</span><br></pre></td></tr></table></figure>
+<p><code>Dockfile</code>的使用 可以参考 <a href="https://www.runoob.com/docker/docker-dockerfile.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-dockerfile.html</a></p>
+<p>运行<code>docker docker build -t flyingzl/mrtc-server:v2 .</code>可以 生成一个本地镜像</p>
+<p><img src="https://g.asyncoder.com/images/20201210172605-image-20201210172604018.png" alt="image-20201210172604018"></p>
+<p><img src="https://g.asyncoder.com/images/20201210172806-image-20201210172805229.png" alt="image-20201210172805229"></p>
+<h2 id="通过API和-SDK来获取Docker信息"><a href="#通过API和-SDK来获取Docker信息" class="headerlink" title="通过API和 SDK来获取Docker信息"></a>通过API和 SDK来获取Docker信息</h2><p>Docker提供了<a href="https://docs.docker.com/engine/api/" target="_blank" rel="noopener">API</a>来访问访问 ，可以通过 REST API或者第三方SDK来访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">~ curl --unix-socket /var/run/docker.sock http://v1.40/containers/json | jq <span class="string">'[.[] | &#123;name: .Names, image: .Image, status: .Status&#125;]'</span></span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"name"</span>: [</span><br><span class="line">      <span class="string">"/node-vim-demo"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"image"</span>: <span class="string">"node-vim"</span>,</span><br><span class="line">    <span class="string">"status"</span>: <span class="string">"Up 41 minutes"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"name"</span>: [</span><br><span class="line">      <span class="string">"/portainer"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"image"</span>: <span class="string">"portainer/portainer-ce"</span>,</span><br><span class="line">    <span class="string">"status"</span>: <span class="string">"Up 17 hours"</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>或者在Node.js上 使用 <a href="https://github.com/apocas/dockerode" target="_blank" rel="noopener">dockerode</a>来进行访问</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Docker <span class="keyword">from</span> <span class="string">'dockerode'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> docker = <span class="keyword">new</span> Docker()</span><br><span class="line"><span class="comment">// 获取Docker版本信息</span></span><br><span class="line">docker.version().then(<span class="function"><span class="params">v</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`docker version: <span class="subst">$&#123;v.Version&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取当前正在运行的容器</span></span><br><span class="line">docker.listContainers().then(<span class="function"><span class="params">containers</span> =&gt;</span> &#123;</span><br><span class="line">    containers.forEach(<span class="function"><span class="params">container</span> =&gt;</span>  &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;container.Names&#125;</span>\t<span class="subst">$&#123;container.Image&#125;</span>\t<span class="subst">$&#123;container.Status&#125;</span>`</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzAxODE2MjM1MA==&amp;mid=2651562919&amp;idx=1&amp;sn=e104ff4e6d1f4ea88f419244bb9da608&amp;chksm=80257466b752fd70be127c910e1d7ef8e36b573e9e4a96f3371d4f890c6e49b9e53699b9c59c&amp;mpshare=1&amp;scene=1&amp;srcid=1210YXwNWCaNxeGwtYT0NEhX&amp;sharer_sharetime=1607592691939&amp;sharer_shareid=281b99e11b10b50250f9d04de224f74d#rd" target="_blank" rel="noopener">谁说前端不用懂，手摸手 Docker 从入门到实践</a></p>
+<p><a href="https://juejin.cn/post/6844904117165359111" target="_blank" rel="noopener">小白学习docker只要这篇文章就够了</a></p>
+<p><a href="https://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="noopener">Docker 教程</a></p>
+<p><a href="https://www.zhihu.com/question/48174633" target="_blank" rel="noopener">docker容器与虚拟机有什么区别？</a></p>
+<p><a href="https://www.hangge.com/blog/cache/detail_2411.html" target="_blank" rel="noopener">Docker镜像导入导出</a></p>
+<p><a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="noopener">Dockfile Reference</a></p>
+<p><a href="https://yeqing.run/202005/docker-vnc-desktop.html" target="_blank" rel="noopener">Docker运行Unbuntu桌面</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+            <a href="/tags/Node-js/" rel="tag"># Node.js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/11/Electron开发小结/" rel="next" title="Electron开发小结">
+                <i class="fa fa-chevron-left"></i> Electron开发小结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/03/聊聊WebTransport/" rel="prev" title="聊聊WebTransport">
+                聊聊WebTransport <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Larry Zhao</p>
+              <p class="site-description motion-element" itemprop="description">Larry Zhao的个人博客，谈生活，聊技术，快乐每一天</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/flyingzl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-是什么？"><span class="nav-number">1.</span> <span class="nav-text">Docker 是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同类技术"><span class="nav-number">1.2.</span> <span class="nav-text">同类技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优缺点"><span class="nav-number">1.3.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker架构"><span class="nav-number">1.4.</span> <span class="nav-text">Docker架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些术语"><span class="nav-number">1.5.</span> <span class="nav-text">一些术语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么会出现"><span class="nav-number">2.</span> <span class="nav-text">为什么会出现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决什么问题"><span class="nav-number">2.1.</span> <span class="nav-text">解决什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没这个技术之前怎么作"><span class="nav-number">2.2.</span> <span class="nav-text">没这个技术之前怎么作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速上手"><span class="nav-number">3.</span> <span class="nav-text">快速上手</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-环境安装"><span class="nav-number">3.1.</span> <span class="nav-text">Docker 环境安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker运行过程"><span class="nav-number">3.2.</span> <span class="nav-text">Docker运行过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-容器使用"><span class="nav-number">3.3.</span> <span class="nav-text">Docker 容器使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-World运行"><span class="nav-number">3.3.1.</span> <span class="nav-text">Hello World运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看镜像"><span class="nav-number">3.3.2.</span> <span class="nav-text">查看镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建容器"><span class="nav-number">3.3.3.</span> <span class="nav-text">创建容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入容器"><span class="nav-number">3.3.4.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口映射"><span class="nav-number">3.3.5.</span> <span class="nav-text">端口映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#停止容器"><span class="nav-number">3.3.6.</span> <span class="nav-text">停止容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动容器"><span class="nav-number">3.3.7.</span> <span class="nav-text">启动容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除容器"><span class="nav-number">3.3.8.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建镜像"><span class="nav-number">3.3.9.</span> <span class="nav-text">创建镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除镜像"><span class="nav-number">3.3.10.</span> <span class="nav-text">删除镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件拷贝"><span class="nav-number">3.3.11.</span> <span class="nav-text">文件拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件目录映射"><span class="nav-number">3.3.12.</span> <span class="nav-text">文件目录映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看日志"><span class="nav-number">3.3.13.</span> <span class="nav-text">查看日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出格式化"><span class="nav-number">3.3.14.</span> <span class="nav-text">输出格式化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实战"><span class="nav-number">4.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#发票识别"><span class="nav-number">4.1.</span> <span class="nav-text">发票识别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于Nginx的RTMP推流"><span class="nav-number">4.2.</span> <span class="nav-text">基于Nginx的RTMP推流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac上构建Electron-Windows应用"><span class="nav-number">4.3.</span> <span class="nav-text">Mac上构建Electron Windows应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可视化管理Docker"><span class="nav-number">4.4.</span> <span class="nav-text">可视化管理Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建本地镜像"><span class="nav-number">4.5.</span> <span class="nav-text">创建本地镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过API和-SDK来获取Docker信息"><span class="nav-number">4.6.</span> <span class="nav-text">通过API和 SDK来获取Docker信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Larry Zhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <span>累计用户数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <span>累计访问次数：</span>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz',
+        appKey: '24OXXapw3lKnsOgWlAqF2EEI',
+        placeholder: '壮士来留个言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("l1wGYI0F98c0KKBTjmUFbclq-gzGzoHsz", "24OXXapw3lKnsOgWlAqF2EEI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
