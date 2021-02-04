@@ -267,7 +267,7 @@ WebTransport 现在只有 Google Chrome 支持，其标准也处于草案阶段�
 如果向自己玩耍 WebTransport，可以通过[mkcert](https://github.com/FiloSottile/mkcert)生成下 HTTPS 证书，然后在 Google Chrome 时加上自定参数，例如 Mac 下启动 Google Chrome 需要加上如下类似代码：
 
 ```bash
-open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --origin-to-force-quic-on=localhost:4433 https://googlechrome.github.io/samples/webtransport/client.html'
+open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --origin-to-force-quic-on=localhost:4433 https://googlechrome.github.io/samples/webtransport/client.html
 ```
 
 具体代码可以参考[https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py](https://github.com/GoogleChrome/samples/blob/gh-pages/quictransport/quic_transport_server.py).
